@@ -25,6 +25,7 @@ Jarvis AEO is an **Ask Engine Optimization** platform that helps businesses mana
 - Session persistence via refresh token
 
 ### 1. Brand Presence Tracking — `High`
+- **Brand Creation** — Brand create a tenant on AEO platform
 - **Brand Visibility** — How often the brand appears in AI responses
 - **Brand Mentions** — Raw mention count across engines
 - **Link Visibility** — How often brand URLs are cited
