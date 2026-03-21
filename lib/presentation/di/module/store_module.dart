@@ -67,6 +67,11 @@ class StoreModule {
 
     getIt.registerSingleton<ForgotPasswordStore>(
       ForgotPasswordStore(
+        //getIt<FormErrorStore>(),
+        getIt<ErrorStore>(),
+      ),
+    );
+
     getIt.registerSingleton<OverviewStore>(
       OverviewStore(
         getIt<ErrorStore>(),
