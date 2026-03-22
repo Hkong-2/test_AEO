@@ -38,6 +38,7 @@ class AppThemeData {
       textTheme: _textTheme,
       // Matches manifest.json colors and background color.
       primaryColor: const Color(0xFF030303),
+      useMaterial3: true,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.surface,
         elevation: 0,
@@ -48,6 +49,16 @@ class AppThemeData {
       scaffoldBackgroundColor: colorScheme.surface,
       highlightColor: Colors.transparent,
       focusColor: focusColor,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: colorScheme.secondary, // Teal FAB
+        foregroundColor: Colors.white,
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colorScheme.secondary,
+          foregroundColor: Colors.white,
+        ),
+      ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         backgroundColor: Color.alphaBlend(
@@ -62,11 +73,12 @@ class AppThemeData {
   static const ColorScheme lightColorScheme = ColorScheme(
     primary: Color(0xFFd21e1d),
     primaryContainer: Color(0xFF9e1718),
-    secondary: Color(0xFFEFF3F3),
-    secondaryContainer: Color(0xFFFAFBFB),
+    secondary: Color(0xFF009688), // Teal for Cronjob Automation feature
+    secondaryContainer: Color(0xFFB2DFDB),
+    tertiary: Color(0xFFF57C00), // Orange for partial success states
     surface: Color(0xFFFAFBFB),
-    error: _lightFillColor,
-    onError: _lightFillColor,
+    error: Color(0xFFD32F2F), // Proper red for errors
+    onError: _darkFillColor,
     onPrimary: _lightFillColor,
     onSecondary: Color(0xFF322942),
     onSurface: Color(0xFF241E30),
@@ -76,12 +88,12 @@ class AppThemeData {
   static const ColorScheme darkColorScheme = ColorScheme(
     primary: Color(0xFFFF8383),
     primaryContainer: Color(0xFF1CDEC9),
-    secondary: Color(0xFF4D1F7C),
-    secondaryContainer: Color(0xFF451B6F),
-    surface: Color(0xFF1F1929),
-    // White with 0.05 opacity
-    error: _darkFillColor,
-    onError: _darkFillColor,
+    secondary: Color(0xFF4DB8AA), // Lighter teal for dark mode
+    secondaryContainer: Color(0xFF00796B),
+    tertiary: Color(0xFFFFB74D), // Lighter orange for dark mode
+    surface: Color(0xFF121212), // Proper dark surface (not pure black)
+    error: Color(0xFFEF5350), // Brighter red for dark mode
+    onError: _lightFillColor,
     onPrimary: _darkFillColor,
     onSecondary: _darkFillColor,
     onSurface: _darkFillColor,

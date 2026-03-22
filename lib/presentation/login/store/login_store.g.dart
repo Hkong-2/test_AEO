@@ -8,15 +8,25 @@ part of 'login_store.dart';
 
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
-mixin _$UserStore on _UserStore, Store {
-  Computed<bool>? _$isLoadingComputed;
+mixin _$LoginStore on _LoginStore, Store {
+  late final _$isLoggedInAtom =
+      Atom(name: '_LoginStore.isLoggedIn', context: context);
 
   @override
-  bool get isLoading => (_$isLoadingComputed ??=
-          Computed<bool>(() => super.isLoading, name: '_UserStore.isLoading'))
-      .value;
+  bool get isLoggedIn {
+    _$isLoggedInAtom.reportRead();
+    return super.isLoggedIn;
+  }
 
-  late final _$successAtom = Atom(name: '_UserStore.success', context: context);
+  @override
+  set isLoggedIn(bool value) {
+    _$isLoggedInAtom.reportWrite(value, super.isLoggedIn, () {
+      super.isLoggedIn = value;
+    });
+  }
+
+  late final _$successAtom =
+      Atom(name: '_LoginStore.success', context: context);
 
   @override
   bool get success {
@@ -31,36 +41,61 @@ mixin _$UserStore on _UserStore, Store {
     });
   }
 
-  late final _$loginFutureAtom =
-      Atom(name: '_UserStore.loginFuture', context: context);
+  late final _$isLoadingAtom =
+      Atom(name: '_LoginStore.isLoading', context: context);
 
   @override
-  ObservableFuture<User?> get loginFuture {
-    _$loginFutureAtom.reportRead();
-    return super.loginFuture;
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
   }
 
   @override
-  set loginFuture(ObservableFuture<User?> value) {
-    _$loginFutureAtom.reportWrite(value, super.loginFuture, () {
-      super.loginFuture = value;
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
+  late final _$loginResultAtom =
+      Atom(name: '_LoginStore.loginResult', context: context);
+
+  @override
+  User? get loginResult {
+    _$loginResultAtom.reportRead();
+    return super.loginResult;
+  }
+
+  @override
+  set loginResult(User? value) {
+    _$loginResultAtom.reportWrite(value, super.loginResult, () {
+      super.loginResult = value;
     });
   }
 
   late final _$loginAsyncAction =
-      AsyncAction('_UserStore.login', context: context);
+      AsyncAction('_LoginStore.login', context: context);
 
   @override
-  Future<dynamic> login(String email, String password) {
+  Future<void> login(String email, String password) {
     return _$loginAsyncAction.run(() => super.login(email, password));
+  }
+
+  late final _$logoutAsyncAction =
+      AsyncAction('_LoginStore.logout', context: context);
+
+  @override
+  Future<void> logout() {
+    return _$logoutAsyncAction.run(() => super.logout());
   }
 
   @override
   String toString() {
     return '''
+isLoggedIn: ${isLoggedIn},
 success: ${success},
-loginFuture: ${loginFuture},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+loginResult: ${loginResult}
     ''';
   }
 }

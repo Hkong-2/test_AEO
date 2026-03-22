@@ -29,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final FormStore _formStore = getIt<FormStore>();
-  final UserStore _userStore = getIt<UserStore>();
+  final LoginStore _loginStore = getIt<LoginStore>();
 
   //focus node:-----------------------------------------------------------------
   late FocusNode _passwordFocusNode;
@@ -80,15 +80,19 @@ class _LoginScreenState extends State<LoginScreen> {
             : Center(child: _buildRightSide()),
         Observer(
           builder: (context) {
-            return _userStore.success
-                ? navigate(context)
-                : _showErrorMessage(_formStore.errorStore.errorMessage);
+            // Use Future.microtask to defer navigation until after build
+            if (_loginStore.success) {
+              Future.microtask(() => navigate(context));
+            } else if (_formStore.errorStore.errorMessage.isNotEmpty) {
+              Future.microtask(() => _showErrorMessage(_formStore.errorStore.errorMessage));
+            }
+            return const SizedBox.shrink();
           },
         ),
         Observer(
           builder: (context) {
             return Visibility(
-              visible: _userStore.isLoading,
+              visible: _loginStore.isLoading,
               child: CustomProgressIndicatorWidget(),
             );
           },
@@ -375,7 +379,7 @@ class _LoginScreenState extends State<LoginScreen> {
           onPressed: () async {
             if (_formStore.canLogin) {
               DeviceUtils.hideKeyboard(context);
-              _userStore.login(
+              _loginStore.login(
                   _userEmailController.text, _passwordController.text);
             } else {
               _showErrorMessage('Please enter valid corporate credentials');
@@ -397,7 +401,7 @@ class _LoginScreenState extends State<LoginScreen> {
           _showErrorMessage('Google Sign-In - Mock Implementation');
           // Mock Google Sign-In
           Future.delayed(const Duration(seconds: 1), () {
-            _userStore.login('user@google.com', 'mock_password');
+            _loginStore.login('user@google.com', 'mock_password');
           });
         },
         borderRadius: BorderRadius.circular(12.0),
