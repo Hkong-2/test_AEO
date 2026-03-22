@@ -17,6 +17,25 @@ enum PromptKeywordType {
   neutral,
 }
 
+enum PromptTypeFilter {
+  informational('Informational'),
+  commercial('Commercial'),
+  transactional('Transactional'),
+  navigational('Navigational');
+
+  final String label;
+  const PromptTypeFilter(this.label);
+}
+
+enum MonitoringStatusFilter {
+  all('All'),
+  monitored('Monitored'),
+  notMonitored('Not Monitored');
+
+  final String label;
+  const MonitoringStatusFilter(this.label);
+}
+
 class PromptKeyword {
   final String value;
   final PromptKeywordType type;
@@ -31,6 +50,8 @@ class PromptItem {
   final String id;
   final String question;
   final TopicDetailTab tab;
+  final PromptTypeFilter promptType;
+  final bool isMonitored;
   final List<PromptKeyword> keywords;
   final String llm;
   final String brandMentioned;
@@ -42,6 +63,8 @@ class PromptItem {
     required this.id,
     required this.question,
     required this.tab,
+    required this.promptType,
+    required this.isMonitored,
     required this.keywords,
     required this.llm,
     required this.brandMentioned,
@@ -58,6 +81,8 @@ class TopicDetailStore extends ChangeNotifier {
   final TextEditingController searchController = TextEditingController();
 
   TopicDetailTab _selectedTab = TopicDetailTab.active;
+  Set<PromptTypeFilter> _selectedPromptTypes = {};
+  MonitoringStatusFilter _monitoringStatusFilter = MonitoringStatusFilter.all;
 
   final List<PromptItem> _prompts = [
     PromptItem(
@@ -65,6 +90,8 @@ class TopicDetailStore extends ChangeNotifier {
       question:
           'What are the best undergraduate computer science programs in Vietnam right now?',
       tab: TopicDetailTab.active,
+      promptType: PromptTypeFilter.informational,
+      isMonitored: true,
       keywords: [
         PromptKeyword(
           value: 'Informational',
@@ -90,6 +117,8 @@ class TopicDetailStore extends ChangeNotifier {
       question:
           'How do I choose the best IT university in Vietnam to align with my career goals?',
       tab: TopicDetailTab.suggestion,
+      promptType: PromptTypeFilter.commercial,
+      isMonitored: true,
       keywords: [
         PromptKeyword(value: 'Commercial', type: PromptKeywordType.commercial),
         PromptKeyword(
@@ -112,10 +141,12 @@ class TopicDetailStore extends ChangeNotifier {
       question:
           'What should I expect from a high-quality IT education program in terms of coursework and facilities?',
       tab: TopicDetailTab.keyword,
+      promptType: PromptTypeFilter.transactional,
+      isMonitored: false,
       keywords: [
         PromptKeyword(
-          value: 'Informational',
-          type: PromptKeywordType.informational,
+          value: 'Transactional',
+          type: PromptKeywordType.commercial,
         ),
         PromptKeyword(
           value: 'Higher Education in IT',
@@ -137,10 +168,12 @@ class TopicDetailStore extends ChangeNotifier {
       question:
           'Could you outline the standard curriculum requirements for a Master of Science in Computer Science?',
       tab: TopicDetailTab.inactive,
+      promptType: PromptTypeFilter.navigational,
+      isMonitored: false,
       keywords: [
         PromptKeyword(
-          value: 'Informational',
-          type: PromptKeywordType.informational,
+          value: 'Navigational',
+          type: PromptKeywordType.neutral,
         ),
         PromptKeyword(
           value: 'Higher Education in IT',
@@ -161,7 +194,17 @@ class TopicDetailStore extends ChangeNotifier {
 
   TopicDetailTab get selectedTab => _selectedTab;
 
+  Set<PromptTypeFilter> get selectedPromptTypes =>
+      Set.unmodifiable(_selectedPromptTypes);
+
+  MonitoringStatusFilter get monitoringStatusFilter => _monitoringStatusFilter;
+
   List<TopicDetailTab> get tabs => TopicDetailTab.values;
+
+  List<PromptTypeFilter> get promptTypeFilters => PromptTypeFilter.values;
+
+  List<MonitoringStatusFilter> get monitoringStatusFilters =>
+      MonitoringStatusFilter.values;
 
   void setTab(TopicDetailTab tab) {
     _selectedTab = tab;
@@ -169,6 +212,21 @@ class TopicDetailStore extends ChangeNotifier {
   }
 
   void onSearchChanged(String _) {
+    notifyListeners();
+  }
+
+  void applyFilters({
+    required Set<PromptTypeFilter> promptTypes,
+    required MonitoringStatusFilter monitoringStatus,
+  }) {
+    _selectedPromptTypes = {...promptTypes};
+    _monitoringStatusFilter = monitoringStatus;
+    notifyListeners();
+  }
+
+  void clearFilters() {
+    _selectedPromptTypes = {};
+    _monitoringStatusFilter = MonitoringStatusFilter.all;
     notifyListeners();
   }
 
@@ -188,6 +246,8 @@ class TopicDetailStore extends ChangeNotifier {
       id: prompt.id,
       question: prompt.question,
       tab: prompt.tab,
+      promptType: prompt.promptType,
+      isMonitored: prompt.isMonitored,
       keywords: prompt.keywords,
       llm: prompt.llm,
       brandMentioned: prompt.brandMentioned,
@@ -207,8 +267,19 @@ class TopicDetailStore extends ChangeNotifier {
           prompt.question.toLowerCase().contains(query) ||
           prompt.keywords
               .any((keyword) => keyword.value.toLowerCase().contains(query));
+      final matchesPromptType = _selectedPromptTypes.isEmpty ||
+          _selectedPromptTypes.contains(prompt.promptType);
+      final matchesMonitoring =
+          _monitoringStatusFilter == MonitoringStatusFilter.all ||
+              (_monitoringStatusFilter == MonitoringStatusFilter.monitored &&
+                  prompt.isMonitored) ||
+              (_monitoringStatusFilter == MonitoringStatusFilter.notMonitored &&
+                  !prompt.isMonitored);
 
-      return matchesTab && matchesSearch;
+      return matchesTab &&
+          matchesSearch &&
+          matchesPromptType &&
+          matchesMonitoring;
     }).toList(growable: false);
   }
 

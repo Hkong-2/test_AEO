@@ -148,7 +148,7 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
         Row(
           children: [
             OutlinedButton.icon(
-              onPressed: () {},
+              onPressed: () => _showFilterBottomSheet(context),
               icon: const Icon(Icons.filter_list, size: 18),
               label: const Text('Filters'),
               style: OutlinedButton.styleFrom(
@@ -176,6 +176,207 @@ class _TopicDetailScreenState extends State<TopicDetailScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  Future<void> _showFilterBottomSheet(BuildContext context) async {
+    var localPromptTypes = {..._store.selectedPromptTypes};
+    var localMonitoring = _store.monitoringStatusFilter;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      isDismissible: true,
+      enableDrag: true,
+      elevation: 12,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return SafeArea(
+              top: false,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 16,
+                  right: 16,
+                  top: 16,
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          const Text(
+                            'Filters',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF101828),
+                            ),
+                          ),
+                          const Spacer(),
+                          TextButton(
+                            onPressed: () {
+                              setModalState(() {
+                                localPromptTypes = {};
+                                localMonitoring = MonitoringStatusFilter.all;
+                              });
+                            },
+                            child: const Text(
+                              'Clear all',
+                              style: TextStyle(
+                                color: Color(0xFF667085),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'Prompt Type',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1D2939),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: _store.promptTypeFilters.map((type) {
+                          final isChecked = localPromptTypes.contains(type);
+                          return SizedBox(
+                            width: (MediaQuery.of(context).size.width - 48) / 2,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 4,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isChecked
+                                    ? const Color(0xFFF2F8FF)
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: CheckboxListTile(
+                                value: isChecked,
+                                dense: true,
+                                contentPadding: EdgeInsets.zero,
+                                controlAffinity:
+                                    ListTileControlAffinity.leading,
+                                title: Text(
+                                  type.label,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    color: Color(0xFF344054),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setModalState(() {
+                                    if (value == true) {
+                                      localPromptTypes.add(type);
+                                    } else {
+                                      localPromptTypes.remove(type);
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
+                          );
+                        }).toList(growable: false),
+                      ),
+                      const SizedBox(height: 14),
+                      const Text(
+                        'Monitoring Status',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF1D2939),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ..._store.monitoringStatusFilters.map((status) {
+                        final isSelected = localMonitoring == status;
+                        return Container(
+                          margin: const EdgeInsets.only(bottom: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? const Color(0xFFF2F8FF)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: RadioListTile<MonitoringStatusFilter>(
+                            value: status,
+                            groupValue: localMonitoring,
+                            dense: true,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                              status.label,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Color(0xFF344054),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              if (value == null) {
+                                return;
+                              }
+                              setModalState(() {
+                                localMonitoring = value;
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _store.applyFilters(
+                              promptTypes: localPromptTypes,
+                              monitoringStatus: localMonitoring,
+                            );
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFFF6A00),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: const Text(
+                            'Apply Filters',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 
