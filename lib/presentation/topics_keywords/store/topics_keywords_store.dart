@@ -164,6 +164,11 @@ class TopicsKeywordsStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteSelectedTopics() {
+    _items = _items.where((item) => !item.isSelected).toList(growable: false);
+    notifyListeners();
+  }
+
   List<TopicKeywordItem> get filteredItems {
     final query = searchController.text.trim().toLowerCase();
 

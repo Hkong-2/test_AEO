@@ -138,7 +138,9 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
               alignment: WrapAlignment.end,
               children: [
                 OutlinedButton.icon(
-                  onPressed: _store.selectedCount == 0 ? null : () {},
+                  onPressed: _store.selectedCount == 0
+                      ? null
+                      : () => _showDeleteConfirmationDialog(context),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFFB42318),
                     side: const BorderSide(color: Color(0xFFFDA29B)),
@@ -176,6 +178,115 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _showDeleteConfirmationDialog(BuildContext context) async {
+    final selectedCount = _store.selectedCount;
+
+    if (selectedCount == 0) {
+      return;
+    }
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        return Dialog(
+          elevation: 10,
+          shadowColor: Colors.black26,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Container(
+            width: 360,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 20, 12, 8),
+                  child: Row(
+                    children: [
+                      const Expanded(
+                        child: Text(
+                          'Delete Topics',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                            color: Color(0xFF101828),
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                        },
+                        icon: const Icon(Icons.close),
+                        splashRadius: 20,
+                        color: const Color(0xFF667085),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                  child: Text(
+                    'Are you sure you want to delete $selectedCount topic(s)? This action cannot be undone.',
+                    style: const TextStyle(
+                      color: Color(0xFF475467),
+                      fontSize: 14,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+                const Divider(height: 1, color: Color(0xFFE4E7EC)),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      OutlinedButton(
+                        onPressed: () {
+                          Navigator.of(dialogContext).pop();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: const Color(0xFF344054),
+                          side: const BorderSide(color: Color(0xFFD0D5DD)),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Cancel'),
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          _store.deleteSelectedTopics();
+                          Navigator.of(dialogContext).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFFE04F16),
+                          foregroundColor: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: const Text('Delete'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
