@@ -1,4 +1,5 @@
 import 'package:boilerplate/presentation/topics_keywords/store/topics_keywords_store.dart';
+import 'package:boilerplate/presentation/topics_keywords/topic_detail/topic_detail.dart';
 import 'package:flutter/material.dart';
 
 class TopicsKeywordsScreen extends StatefulWidget {
@@ -288,7 +289,14 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
         shadowColor: Colors.black12,
         child: InkWell(
           borderRadius: BorderRadius.circular(12),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => TopicDetailScreen(topicName: item.topic),
+              ),
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
