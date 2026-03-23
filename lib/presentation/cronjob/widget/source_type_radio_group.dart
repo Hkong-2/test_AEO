@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/domain/entity/cronjob/source_type.dart';
 
 /// Radio button group for selecting source type
@@ -26,7 +27,7 @@ class _SourceTypeRadioGroupState extends State<SourceTypeRadioGroup> {
       children: [
         Text(
           'Content Source *',
-          style: theme.textTheme.titleSmall?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w600,
           ),
         ),

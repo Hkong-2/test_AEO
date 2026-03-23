@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 
 /// Configuration screen for agent settings
@@ -141,7 +142,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
             const SizedBox(height: 6),
             Text(
               'Content Source',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: _currentStep >= 1 ? Colors.deepOrange : Colors.grey.shade600,
                 fontWeight: _currentStep >= 1 ? FontWeight.w700 : FontWeight.w500,
@@ -183,7 +184,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
             const SizedBox(height: 6),
             Text(
               'Writing Style',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: _currentStep >= 2 ? Colors.deepOrange : Colors.grey.shade600,
                 fontWeight: _currentStep >= 2 ? FontWeight.w700 : FontWeight.w500,
@@ -201,7 +202,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
       children: [
         Text(
           l10n.translate('cronjob_select_source'),
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w700,
             fontSize: 18,
           ),
@@ -239,7 +240,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
           const SizedBox(height: 20),
           Text(
             l10n.translate('cronjob_website_url'),
-            style: theme.textTheme.labelLarge?.copyWith(
+            style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w600,
               fontSize: 13,
             ),
@@ -323,7 +324,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
                   children: [
                     Text(
                       title,
-                      style: theme.textTheme.titleSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w700,
                         fontSize: 14,
                       ),
@@ -331,7 +332,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
                     const SizedBox(height: 4),
                     Text(
                       description,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontSize: 12,
                         color: Colors.grey.shade700,
                       ),
@@ -358,7 +359,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
       children: [
         Text(
           l10n.translate('cronjob_writing_style'),
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w700,
             fontSize: 18,
           ),
@@ -366,7 +367,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
         const SizedBox(height: 4),
         Text(
           'Define writing style and target voice for this agent.',
-          style: theme.textTheme.bodySmall?.copyWith(
+          style: GoogleFonts.montserrat(
             color: Colors.grey.shade700,
           ),
         ),
@@ -376,14 +377,14 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
           children: [
             Text(
               l10n.translate('cronjob_content_profile'),
-              style: theme.textTheme.labelLarge?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.w600,
                 fontSize: 13,
               ),
             ),
             Text(
               '*',
-              style: theme.textTheme.labelLarge?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.w700,
                 color: Colors.red,
               ),
@@ -459,7 +460,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
                   children: [
                     Text(
                       'PRO TIP',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w700,
                         fontSize: 10,
                         color: Colors.blue,
@@ -469,7 +470,7 @@ class _AgentConfigurationScreenState extends State<AgentConfigurationScreen> {
                     const SizedBox(height: 4),
                     Text(
                       'Different agents can have different profiles. For example, your Blog Agent might use a formal tone while your Social Agent uses a casual one.',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontSize: 11,
                         color: Colors.blue.shade700,
                         height: 1.4,

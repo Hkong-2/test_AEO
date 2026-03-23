@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 import '../util/history_utils.dart';
 import '../widget/execution_list_item.dart';
@@ -136,7 +137,7 @@ class _CronjobHistoryScreenState extends State<CronjobHistoryScreen> {
           // Date range selector
           Text(
             'Date Range',
-            style: theme.textTheme.labelLarge?.copyWith(
+            style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w600,
               fontSize: 13,
               letterSpacing: 0.5,
@@ -173,7 +174,7 @@ class _CronjobHistoryScreenState extends State<CronjobHistoryScreen> {
           // Status filter
           Text(
             'Status',
-            style: theme.textTheme.labelLarge?.copyWith(
+            style: GoogleFonts.montserrat(
               fontWeight: FontWeight.w600,
               fontSize: 13,
               letterSpacing: 0.5,
@@ -255,7 +256,7 @@ class _CronjobHistoryScreenState extends State<CronjobHistoryScreen> {
               const SizedBox(height: 28),
               Text(
                 l10n.translate('cronjob_no_history'),
-                style: theme.textTheme.headlineSmall?.copyWith(
+                style: GoogleFonts.oswald(
                   fontWeight: FontWeight.w700,
                   fontSize: 22,
                 ),
@@ -264,7 +265,7 @@ class _CronjobHistoryScreenState extends State<CronjobHistoryScreen> {
               const SizedBox(height: 12),
               Text(
                 'Try adjusting your filters',
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
                   height: 1.5,
                 ),

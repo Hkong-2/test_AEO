@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/domain/entity/cronjob/publishing_destination.dart';
 
 /// Checkbox group for selecting publishing destinations
@@ -26,7 +27,7 @@ class _DestinationCheckboxGroupState extends State<DestinationCheckboxGroup> {
       children: [
         Text(
           'Publishing Destinations *',
-          style: theme.textTheme.titleSmall?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w600,
           ),
         ),

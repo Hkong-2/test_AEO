@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 
 /// Displays when no cronjobs exist
@@ -40,7 +41,7 @@ class EmptyState extends StatelessWidget {
               // Title
               Text(
                 l10n.translate('cronjob_no_jobs'),
-                style: theme.textTheme.headlineSmall?.copyWith(
+                style: GoogleFonts.oswald(
                   fontWeight: FontWeight.w700,
                   fontSize: 24,
                 ),
@@ -51,7 +52,7 @@ class EmptyState extends StatelessWidget {
               // Description
               Text(
                 l10n.translate('cronjob_no_jobs_desc'),
-                style: theme.textTheme.bodyMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
                   height: 1.5,
                 ),

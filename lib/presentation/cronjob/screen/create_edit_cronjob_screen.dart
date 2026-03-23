@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it/get_it.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 
@@ -368,7 +369,7 @@ class _CreateEditCronjobScreenState extends State<CreateEditCronjobScreen> {
                             const SizedBox(width: 12),
                             Text(
                               val ? l10n.translate('cronjob_enabled') : l10n.translate('cronjob_disabled'),
-                              style: theme.textTheme.bodyLarge?.copyWith(
+                              style: GoogleFonts.montserrat(
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -462,7 +463,7 @@ class _CreateEditCronjobScreenState extends State<CreateEditCronjobScreen> {
                 const SizedBox(width: 10),
                 Text(
                   title,
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),
@@ -480,7 +481,7 @@ class _CreateEditCronjobScreenState extends State<CreateEditCronjobScreen> {
   Widget _buildLabel(BuildContext context, String text) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+      style: GoogleFonts.montserrat(
         fontWeight: FontWeight.w600,
         fontSize: 13,
         letterSpacing: 0.5,
@@ -511,7 +512,7 @@ class _CreateEditCronjobScreenState extends State<CreateEditCronjobScreen> {
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   '(Optional)',
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: GoogleFonts.montserrat(
                     color: theme.textTheme.labelSmall?.color?.withOpacity(0.6),
                   ),
                 ),

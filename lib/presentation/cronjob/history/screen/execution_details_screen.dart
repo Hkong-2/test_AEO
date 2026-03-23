@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../util/history_utils.dart';
 import '../widget/article_preview_card.dart';
 import '../widget/execution_list_item.dart';
@@ -146,7 +147,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
                     children: [
                       Text(
                         widget.cronjobName ?? 'Cronjob',
-                        style: theme.textTheme.headlineSmall?.copyWith(
+                        style: GoogleFonts.oswald(
                           fontWeight: FontWeight.w700,
                           fontSize: 18,
                         ),
@@ -158,7 +159,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
                           const SizedBox(width: 6),
                           Text(
                             formatExecutionDateTime(mockExecution.executedAt),
-                            style: theme.textTheme.bodySmall?.copyWith(
+                            style: GoogleFonts.montserrat(
                               color: Colors.grey.shade600,
                             ),
                           ),
@@ -243,14 +244,14 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
         const SizedBox(height: 6),
         Text(
           value,
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w700,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           label,
-          style: theme.textTheme.labelSmall?.copyWith(
+          style: GoogleFonts.montserrat(
             fontSize: 11,
             color: Colors.grey.shade600,
           ),
@@ -270,7 +271,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
           children: [
             Text(
               'Generated Articles',
-              style: theme.textTheme.titleMedium?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.w700,
                 fontSize: 16,
               ),
@@ -283,7 +284,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
               ),
               child: Text(
                 mockArticles.length.toString(),
-                style: theme.textTheme.labelSmall?.copyWith(
+                style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w600,
                   color: theme.primaryColor,
                 ),
@@ -302,7 +303,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
               child: Center(
                 child: Text(
                   'No articles were generated',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: GoogleFonts.montserrat(
                     color: Colors.grey.shade600,
                   ),
                 ),
@@ -333,7 +334,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
       children: [
         Text(
           'Publishing Results',
-          style: theme.textTheme.titleMedium?.copyWith(
+          style: GoogleFonts.montserrat(
             fontWeight: FontWeight.w700,
             fontSize: 16,
           ),
@@ -349,7 +350,7 @@ class _ExecutionDetailsScreenState extends State<ExecutionDetailsScreen> {
               child: Center(
                 child: Text(
                   'No publishing results available',
-                  style: theme.textTheme.bodyMedium?.copyWith(
+                  style: GoogleFonts.montserrat(
                     color: Colors.grey.shade600,
                   ),
                 ),

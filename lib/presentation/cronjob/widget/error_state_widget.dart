@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 /// Widget for displaying error states with retry capability
 /// 
@@ -40,7 +41,7 @@ class ErrorStateWidget extends StatelessWidget {
               if (title != null) ...[
                 Text(
                   title!,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  style: GoogleFonts.oswald(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
                   ),
@@ -52,7 +53,7 @@ class ErrorStateWidget extends StatelessWidget {
               // Error message
               Text(
                 errorMessage ?? 'An unexpected error occurred',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   color: Colors.grey.shade600,
                 ),
                 textAlign: TextAlign.center,
@@ -116,7 +117,7 @@ class EmptyStateWidget extends StatelessWidget {
             const SizedBox(height: 24),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              style: GoogleFonts.montserrat(
                 color: Colors.grey.shade600,
               ),
               textAlign: TextAlign.center,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/domain/entity/cronjob/cronjob.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
 
@@ -45,7 +46,7 @@ class JobCard extends StatelessWidget {
                     children: [
                       Text(
                         job.name,
-                        style: theme.textTheme.titleMedium?.copyWith(
+                        style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
                         ),
@@ -55,7 +56,7 @@ class JobCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Text(
                         job.description ?? 'No description',
-                        style: theme.textTheme.bodySmall?.copyWith(
+                        style: GoogleFonts.montserrat(
                           color: Colors.grey.shade700,
                           fontSize: 13,
                         ),
@@ -75,7 +76,7 @@ class JobCard extends StatelessWidget {
                   ),
                   child: Text(
                     job.isEnabled ? 'ACTIVE' : 'INACTIVE',
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
                       fontSize: 10,
                       color: job.isEnabled ? Colors.green : Colors.orange,
@@ -97,7 +98,7 @@ class JobCard extends StatelessWidget {
                 const SizedBox(width: 6),
                 Text(
                   'LAST RUN: ${_getLastRunInfo(l10n)}',
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontSize: 11,
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w600,

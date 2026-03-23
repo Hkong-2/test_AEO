@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/di/service_locator.dart';
 import 'package:boilerplate/presentation/cronjob/store/cronjob_store.dart';
 import 'package:boilerplate/presentation/cronjob/store/cronjob_execution_store.dart';
@@ -198,7 +199,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                 children: [
                   Text(
                     'Auto-Generation',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    style: GoogleFonts.oswald(
                       fontWeight: FontWeight.w700,
                       fontSize: 24,
                       color: Colors.black87,
@@ -207,7 +208,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   const SizedBox(height: 8),
                   Text(
                     'Enable automated content generation and track execution history.',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 14,
                       color: Colors.grey.shade600,
                       height: 1.4,
@@ -231,7 +232,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                 children: [
                   Text(
                     'Active Agents',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                       color: Colors.black87,
@@ -243,7 +244,6 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   Observer(
                     builder: (_) {
                       final hasActiveAgent = _cronjobStore.activeAgentType != null;
-                      final theme = Theme.of(context);
                       
                       if (hasActiveAgent) {
                         // Active state - show success message
@@ -273,7 +273,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                                   children: [
                                     Text(
                                       '1 Agent Activated Successfully',
-                                      style: theme.textTheme.labelLarge?.copyWith(
+                                      style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                         color: Colors.green,
@@ -282,7 +282,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                                     const SizedBox(height: 3),
                                     Text(
                                       'Your automation is now running according to your configuration.',
-                                      style: theme.textTheme.labelSmall?.copyWith(
+                                      style: GoogleFonts.montserrat(
                                         fontSize: 11,
                                         color: Colors.green,
                                         height: 1.3,
@@ -322,7 +322,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                                   children: [
                                     Text(
                                       'Ready to start your automation?',
-                                      style: theme.textTheme.labelLarge?.copyWith(
+                                      style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.w600,
                                         fontSize: 13,
                                         color: Colors.blue,
@@ -331,7 +331,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                                     const SizedBox(height: 3),
                                     Text(
                                       'Activate and configure (optional) an agent to start generating content automatically.\nNote: You can only activate one agent at a time.',
-                                      style: theme.textTheme.labelSmall?.copyWith(
+                                      style: GoogleFonts.montserrat(
                                         fontSize: 11,
                                         color: Colors.blue,
                                         height: 1.3,
@@ -362,7 +362,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                 children: [
                   Text(
                     'Execution History',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w700,
                       fontSize: 16,
                       color: Colors.black87,
@@ -401,7 +401,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
               children: [
                 Text(
                   'Agent Performance',
-                  style: theme.textTheme.titleMedium?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w700,
                     fontSize: 16,
                   ),
@@ -439,7 +439,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                           children: [
                             Text(
                               '92%',
-                              style: theme.textTheme.headlineLarge?.copyWith(
+                              style: GoogleFonts.oswald(
                                 fontWeight: FontWeight.w700,
                                 fontSize: 48,
                                 color: Colors.red,
@@ -448,7 +448,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                             const SizedBox(height: 4),
                             Text(
                               'success',
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: GoogleFonts.montserrat(
                                 fontSize: 13,
                                 color: Colors.grey.shade600,
                               ),
@@ -462,7 +462,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   Text(
                     'Average success rate of all agents in the last 30 days.',
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 13,
                       color: Colors.grey.shade600,
                       height: 1.5,
@@ -531,7 +531,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                 const SizedBox(width: 8),
                 Text(
                   label,
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: Colors.grey.shade700,
@@ -542,7 +542,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
             const SizedBox(height: 10),
             Text(
               value,
-              style: theme.textTheme.headlineSmall?.copyWith(
+              style: GoogleFonts.oswald(
                 fontWeight: FontWeight.w700,
                 fontSize: 28,
                 color: Colors.black87,
@@ -551,7 +551,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: Colors.grey.shade500,
               ),
@@ -635,7 +635,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                       children: [
                         Text(
                           agent['title'] as String,
-                          style: theme.textTheme.titleMedium?.copyWith(
+                          style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w700,
                             fontSize: 15,
                           ),
@@ -645,7 +645,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                         const SizedBox(height: 4),
                         Text(
                           agent['description'] as String,
-                          style: theme.textTheme.bodySmall?.copyWith(
+                          style: GoogleFonts.montserrat(
                             color: Colors.grey.shade700,
                             fontSize: 12,
                           ),
@@ -664,7 +664,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                     ),
                     child: Text(
                       isActive ? 'ACTIVE' : 'INACTIVE',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontWeight: FontWeight.w700,
                         fontSize: 9,
                         color: Colors.green,
@@ -686,7 +686,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   const SizedBox(width: 6),
                   Text(
                     'LAST RUN: NEVER RUN',
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 10,
                       color: Colors.grey.shade600,
                       fontWeight: FontWeight.w600,
@@ -716,7 +716,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                           const SizedBox(width: 8),
                           Text(
                             'Agent Activated!',
-                            style: theme.textTheme.labelSmall?.copyWith(
+                            style: GoogleFonts.montserrat(
                               fontWeight: FontWeight.w700,
                               fontSize: 11,
                               color: Colors.green,
@@ -725,7 +725,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                           const Spacer(),
                           Text(
                             'JUST NOW',
-                            style: theme.textTheme.labelSmall?.copyWith(
+                            style: GoogleFonts.montserrat(
                               fontSize: 9,
                               color: Colors.green.shade600,
                               fontWeight: FontWeight.w600,
@@ -736,7 +736,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                       const SizedBox(height: 8),
                       Text(
                         'This agent will generate 100 posts per day',
-                        style: theme.textTheme.labelSmall?.copyWith(
+                        style: GoogleFonts.montserrat(
                           fontSize: 10,
                           color: Colors.green.shade700,
                           height: 1.3,
@@ -1063,7 +1063,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                 const SizedBox(width: 8),
                 Text(
                   'Filter',
-                  style: theme.textTheme.labelSmall?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
                     color: _selectedStatuses.isNotEmpty || _selectedAgentTypes.isNotEmpty || _selectedDateRange != null
@@ -1110,7 +1110,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   // "Active filters:" label
                   Text(
                     'Active filters:',
-                    style: theme.textTheme.labelSmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.grey.shade700,
@@ -1197,7 +1197,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                           width: 80,
                           child: Text(
                             'TIME',
-                            style: theme.textTheme.labelSmall?.copyWith(
+                            style: GoogleFonts.montserrat(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
                             color: Colors.grey.shade700,
@@ -1210,7 +1210,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                         width: 120,
                         child: Text(
                           'AGENT NAME',
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: GoogleFonts.montserrat(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: Colors.grey.shade700,
@@ -1223,7 +1223,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                         width: 220,
                         child: Text(
                           'ARTICLE TITLE',
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: GoogleFonts.montserrat(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: Colors.grey.shade700,
@@ -1236,7 +1236,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                         width: 80,
                         child: Text(
                           'STATUS',
-                          style: theme.textTheme.labelSmall?.copyWith(
+                          style: GoogleFonts.montserrat(
                             fontSize: 11,
                             fontWeight: FontWeight.w700,
                             color: Colors.grey.shade700,
@@ -1256,7 +1256,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       'No execution history found.',
-                      style: theme.textTheme.bodySmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontSize: 13,
                         color: Colors.grey.shade600,
                       ),
@@ -1314,7 +1314,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   width: 80,
                   child: Text(
                     execution['time'] as String? ?? '',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey.shade700,
@@ -1329,7 +1329,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   width: 120,
                   child: Text(
                     execution['agent'] as String,
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.black87,
@@ -1344,7 +1344,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   width: 220,
                   child: Text(
                     execution['title'] as String,
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: Colors.black87,
@@ -1366,7 +1366,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       execution['status'] as String,
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                         color: isSuccess ? Colors.green : Colors.red,
@@ -1534,12 +1534,10 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
     String tempDateUnit,
     Function(Set<String>, Set<String>, DateTimeRange?, int, String) onUpdate,
   ) {
-    final theme = Theme.of(context);
-    
     return AlertDialog(
       title: Text(
         'Filters',
-        style: theme.textTheme.titleLarge?.copyWith(
+        style: GoogleFonts.montserrat(
           fontWeight: FontWeight.w700,
           fontSize: 18,
         ),
@@ -1554,7 +1552,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
               // Status Filter
               Text(
                 'Status',
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),
@@ -1577,7 +1575,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
               // Agent Type Filter
               Text(
                 'Agent Type',
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),
@@ -1600,7 +1598,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
               // Execution Date Filter
               Text(
                 'Execution Date',
-                style: theme.textTheme.titleMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
                 ),
@@ -1608,7 +1606,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
               const SizedBox(height: 12),
               Text(
                 'Last',
-                style: theme.textTheme.bodySmall?.copyWith(
+                style: GoogleFonts.montserrat(
                   fontSize: 12,
                   color: Colors.grey.shade600,
                 ),
@@ -1714,7 +1712,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   padding: const EdgeInsets.only(top: 12),
                   child: Text(
                     'Selected: ${tempDateRange.start.toString().split(' ')[0]} to ${tempDateRange.end.toString().split(' ')[0]}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: Colors.orange,
@@ -1815,7 +1813,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
           ),
           Text(
             label,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: GoogleFonts.montserrat(
               fontSize: 13,
               color: Colors.grey.shade800,
             ),
@@ -1827,7 +1825,6 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
 
   /// Build filter tag chip with remove button
   Widget _buildFilterTag(String label, VoidCallback onRemove) {
-    final theme = Theme.of(context);
     return Container(
       decoration: BoxDecoration(
         color: Colors.deepOrange.withOpacity(0.1),
@@ -1840,7 +1837,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
         children: [
           Text(
             label,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: GoogleFonts.montserrat(
               fontSize: 12,
               fontWeight: FontWeight.w500,
               color: Colors.deepOrange,
@@ -1907,7 +1904,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
             // Page indicator
             Text(
               totalPages == 0 ? 'Page 0' : 'Page $_currentPage of $totalPages',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: Colors.grey.shade700,
@@ -1951,7 +1948,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
           children: [
             Text(
               '$totalResults results',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: Colors.grey.shade600,
               ),
@@ -1959,7 +1956,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
             const SizedBox(width: 20),
             Text(
               'Show:',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: Colors.grey.shade600,
               ),
@@ -1984,7 +1981,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
                   children: [
                     Text(
                       '$_pageSize',
-                      style: theme.textTheme.labelSmall?.copyWith(
+                      style: GoogleFonts.montserrat(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
                       ),
@@ -1998,7 +1995,7 @@ class _CronjobListScreenState extends State<CronjobListScreen> {
             const SizedBox(width: 4),
             Text(
               'per page',
-              style: theme.textTheme.labelSmall?.copyWith(
+              style: GoogleFonts.montserrat(
                 fontSize: 11,
                 color: Colors.grey.shade600,
               ),
@@ -2147,7 +2144,7 @@ class _CustomCalendarPickerState extends State<_CustomCalendarPicker> {
               // Month/Year text
               Text(
                 '${monthNames[month]} $year',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w600,
                     ),
               ),
@@ -2179,7 +2176,7 @@ class _CustomCalendarPickerState extends State<_CustomCalendarPicker> {
                 child: Center(
                   child: Text(
                     day,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
                           color: Colors.grey.shade600,
@@ -2244,7 +2241,7 @@ class _CustomCalendarPickerState extends State<_CustomCalendarPicker> {
                   alignment: Alignment.center,
                   child: Text(
                     dayNum.toString(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                           fontSize: 12,
                           fontWeight: isStartDate || isEndDate
                               ? FontWeight.w700
@@ -2338,14 +2335,14 @@ class _TestRunDialogState extends State<_TestRunDialog> {
                           children: [
                             Text(
                               '${widget.executionStore.successCount}',
-                              style: theme.textTheme.headlineSmall?.copyWith(
+                              style: GoogleFonts.oswald(
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               l10n.translate('cronjob_success'),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: GoogleFonts.montserrat(
                                 color: Colors.green,
                               ),
                             ),
@@ -2355,14 +2352,14 @@ class _TestRunDialogState extends State<_TestRunDialog> {
                           children: [
                             Text(
                               '${widget.executionStore.failureCount}',
-                              style: theme.textTheme.headlineSmall?.copyWith(
+                              style: GoogleFonts.oswald(
                                 color: Colors.red,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
                               l10n.translate('cronjob_failed'),
-                              style: theme.textTheme.bodySmall?.copyWith(
+                              style: GoogleFonts.montserrat(
                                 color: Colors.red,
                               ),
                             ),

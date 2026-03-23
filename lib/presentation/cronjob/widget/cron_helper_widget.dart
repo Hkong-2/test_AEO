@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:boilerplate/presentation/cronjob/util/cron_validator.dart';
 
 /// Displays parsed cron expression with human-readable description
@@ -47,7 +48,7 @@ class CronHelperWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Cron: $cronExpression',
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.w500,
                     color: isValid ? Colors.blue : Colors.red,
                   ),
@@ -62,7 +63,7 @@ class CronHelperWidget extends StatelessWidget {
           // Description
           Text(
             description,
-            style: theme.textTheme.bodySmall?.copyWith(
+            style: GoogleFonts.montserrat(
               color: isValid ? Colors.blue.withOpacity(0.8) : Colors.red.withOpacity(0.8),
             ),
           ),
@@ -81,7 +82,7 @@ class CronHelperWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     'Last run: ${_formatTime(lastExecutionTime!)}',
-                    style: theme.textTheme.bodySmall?.copyWith(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                       color: theme.hintColor,
                     ),
