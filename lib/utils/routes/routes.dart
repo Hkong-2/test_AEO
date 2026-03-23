@@ -7,6 +7,7 @@ import 'package:boilerplate/presentation/overview/overview.dart';
 import 'package:boilerplate/presentation/all_posts/all_posts_screen.dart';
 import 'package:boilerplate/presentation/ai_writer/ai_writer_screen.dart';
 import 'package:boilerplate/presentation/auto_generation/auto_generation_screen.dart';
+import 'package:boilerplate/presentation/cronjob/routes/cronjob_routes.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -24,6 +25,13 @@ class Routes {
   static const String allPosts = '/all-posts';
   static const String aiWriter = '/ai-writer';
   static const String autoGeneration = '/auto-generation';
+  
+  // Cronjob routes
+  static const String cronjobList = '/cronjob/list';
+  static const String cronjobCreate = '/cronjob/create';
+  static const String cronjobEdit = '/cronjob/edit';
+  static const String cronjobHistory = '/cronjob/history';
+  static const String cronjobExecutionDetails = '/cronjob/execution/details';
 
   static final routes = <String, WidgetBuilder>{
     dashboard: (BuildContext context) => DashboardScreen(),
@@ -37,4 +45,28 @@ class Routes {
     autoGeneration: (BuildContext context) => AutoGenerationScreen(),
     //analytic: (BuildContext context) => AnalyticScreen(),
   };
+  
+  // Route generator for handling complex route arguments
+  static Route<dynamic> onGenerateRoute(RouteSettings settings) {
+    // Handle cronjob routes with arguments
+    if (settings.name?.startsWith('/cronjob/') ?? false) {
+      return CronjobRouteGenerator.generateRoute(settings);
+    }
+    
+    // Handle standard routes
+    if (routes.containsKey(settings.name)) {
+      return MaterialPageRoute(
+        builder: routes[settings.name]!,
+      );
+    }
+    
+    // Default fallback
+    return MaterialPageRoute(
+      builder: (_) => Scaffold(
+        body: Center(
+          child: Text('Route ${settings.name} not found'),
+        ),
+      ),
+    );
+  }
 }

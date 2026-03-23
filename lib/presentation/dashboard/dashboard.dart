@@ -86,6 +86,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     MaterialPageRoute(
                         builder: (context) => AutoGenerationScreen()),
                   );
+                title: 'Cronjob Automation',
+                description: 'Manage scheduled automation jobs',
+                icon: Icons.schedule,
+                color: Colors.teal,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.cronjobList);
                 },
               ),
             ],
