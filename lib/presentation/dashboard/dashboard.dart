@@ -45,6 +45,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context).pushNamed(Routes.login);
                 },
               ),
+              SizedBox(height: 20),
+              _buildNavigationButton(
+                context,
+                title: 'Cronjob Automation',
+                description: 'Manage scheduled automation jobs',
+                icon: Icons.schedule,
+                color: Colors.teal,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.cronjobList);
+                },
+              ),
             ],
           ),
         ),
