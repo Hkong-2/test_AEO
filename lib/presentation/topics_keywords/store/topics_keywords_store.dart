@@ -174,6 +174,34 @@ class TopicsKeywordsStore extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addTopics(
+    List<({String topic, String alias, String description})> topics,
+  ) {
+    if (topics.isEmpty) {
+      return;
+    }
+
+    final now = DateTime.now();
+    final newItems = topics
+        .asMap()
+        .entries
+        .map(
+          (entry) => TopicKeywordItem(
+            id: '${now.microsecondsSinceEpoch}_${entry.key}_${_items.length}',
+            topic: entry.value.topic,
+            alias: entry.value.alias,
+            description: entry.value.description,
+            activePrompts: 0,
+            createdAt: now,
+            isMonitoring: false,
+          ),
+        )
+        .toList(growable: false);
+
+    _items = [...newItems, ..._items];
+    notifyListeners();
+  }
+
   List<TopicKeywordItem> get filteredItems {
     final query = searchController.text.trim().toLowerCase();
 

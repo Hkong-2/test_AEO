@@ -2,6 +2,18 @@ import 'package:boilerplate/presentation/topics_keywords/store/topics_keywords_s
 import 'package:boilerplate/presentation/topics_keywords/topic_detail/topic_detail.dart';
 import 'package:flutter/material.dart';
 
+class Topic {
+  final String name;
+  final String alias;
+  final String description;
+
+  const Topic({
+    required this.name,
+    required this.alias,
+    required this.description,
+  });
+}
+
 class TopicsKeywordsScreen extends StatefulWidget {
   @override
   State<TopicsKeywordsScreen> createState() => _TopicsKeywordsScreenState();
@@ -169,7 +181,7 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
 
   Widget _buildAddTopicButton() {
     return ElevatedButton.icon(
-      onPressed: () {},
+      onPressed: () => showAddTopicModal(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: const Color(0xFFFF6A00),
         foregroundColor: Colors.white,
@@ -596,6 +608,67 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
     return isDeleted;
   }
 
+  void showAddTopicModal(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 700;
+
+    final content = _AddTopicsModalContent(
+      onCancel: () => Navigator.of(context).pop(),
+      onSave: (topics) {
+        _store.addTopics(
+          topics
+              .map(
+                (topic) => (
+                  topic: topic.name,
+                  alias: topic.alias,
+                  description: topic.description,
+                ),
+              )
+              .toList(growable: false),
+        );
+        Navigator.of(context).pop();
+      },
+    );
+
+    if (isMobile) {
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (sheetContext) {
+          return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: content,
+            ),
+          );
+        },
+      );
+      return;
+    }
+
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (dialogContext) {
+        return Dialog(
+          elevation: 12,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: SizedBox(
+            width: 900,
+            child: content,
+          ),
+        );
+      },
+    );
+  }
+
   String _formatDate(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
@@ -611,5 +684,450 @@ class _TopicsKeywordsScreenState extends State<TopicsKeywordsScreen> {
     final period = hour24 >= 12 ? 'PM' : 'AM';
     final hour12 = hour24 % 12 == 0 ? 12 : hour24 % 12;
     return '$month/$day/${date.year}, $hour12:$minute:$second $period';
+  }
+}
+
+class _AddTopicsModalContent extends StatefulWidget {
+  final VoidCallback onCancel;
+  final ValueChanged<List<Topic>> onSave;
+
+  const _AddTopicsModalContent({
+    required this.onCancel,
+    required this.onSave,
+  });
+
+  @override
+  State<_AddTopicsModalContent> createState() => _AddTopicsModalContentState();
+}
+
+class _AddTopicsModalContentState extends State<_AddTopicsModalContent>
+    with TickerProviderStateMixin {
+  final List<_TopicEditingRow> _rows = [_TopicEditingRow()];
+
+  bool _showValidationError = false;
+
+  @override
+  void dispose() {
+    for (final row in _rows) {
+      row.dispose();
+    }
+    super.dispose();
+  }
+
+  void _addRow() {
+    setState(() {
+      _rows.add(_TopicEditingRow());
+    });
+  }
+
+  void _removeRow(int index) {
+    if (_rows.length == 1) {
+      _rows.first.clear();
+      return;
+    }
+
+    setState(() {
+      final removed = _rows.removeAt(index);
+      removed.dispose();
+    });
+  }
+
+  void _save() {
+    final topics = _rows.map((row) => row.toTopic()).where((topic) {
+      return topic.name.isNotEmpty ||
+          topic.alias.isNotEmpty ||
+          topic.description.isNotEmpty;
+    }).toList(growable: false);
+
+    if (topics.isEmpty) {
+      setState(() {
+        _showValidationError = true;
+      });
+      return;
+    }
+
+    final hasInvalidTopicName =
+        topics.any((topic) => topic.name.trim().isEmpty);
+    if (hasInvalidTopicName) {
+      setState(() {
+        _showValidationError = true;
+      });
+      return;
+    }
+
+    widget.onSave(topics);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Add Topics',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1D2939),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  onPressed: widget.onCancel,
+                  icon: const Icon(Icons.close),
+                  color: const Color(0xFF98A2B3),
+                ),
+              ],
+            ),
+            const SizedBox(height: 6),
+            const Text(
+              'Organize your topics with custom names, aliases, and descriptions. Paste multiple topics separated by new lines or semicolons.',
+              style: TextStyle(
+                color: Color(0xFF475467),
+                fontSize: 16,
+                height: 1.45,
+              ),
+            ),
+            const SizedBox(height: 18),
+            Container(
+              decoration: BoxDecoration(
+                color: const Color(0xFFF9FAFB),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xFFD0D5DD)),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    minWidth: 840,
+                    maxWidth: 840,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const _TopicTableHeader(),
+                      const Divider(height: 1, color: Color(0xFFE4E7EC)),
+                      AnimatedSize(
+                        duration: const Duration(milliseconds: 220),
+                        curve: Curves.easeOut,
+                        child: Column(
+                          children: [
+                            for (var i = 0; i < _rows.length; i++)
+                              TopicRow(
+                                key: ValueKey(_rows[i].id),
+                                index: i + 1,
+                                nameController: _rows[i].nameController,
+                                aliasController: _rows[i].aliasController,
+                                descriptionController:
+                                    _rows[i].descriptionController,
+                                onDelete: () => _removeRow(i),
+                              ),
+                          ],
+                        ),
+                      ),
+                      const Divider(height: 1, color: Color(0xFFE4E7EC)),
+                      InkWell(
+                        onTap: _addRow,
+                        child: const Padding(
+                          padding: EdgeInsets.fromLTRB(14, 12, 14, 12),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 44,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 18,
+                                  color: Color(0xFF98A2B3),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: Text(
+                                  'Click to add new topic...',
+                                  style: TextStyle(
+                                    color: Color(0xFF98A2B3),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                flex: 2,
+                                child: Text(
+                                  'Alias...',
+                                  style: TextStyle(
+                                    color: Color(0xFF98A2B3),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 12),
+                              Expanded(
+                                flex: 4,
+                                child: Text(
+                                  'Description...',
+                                  style: TextStyle(
+                                    color: Color(0xFF98A2B3),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 56),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            if (_showValidationError) ...[
+              const SizedBox(height: 10),
+              const Text(
+                'Each entered row must have a topic name before saving.',
+                style: TextStyle(
+                  color: Color(0xFFB42318),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+            const SizedBox(height: 16),
+            const Divider(height: 1, color: Color(0xFFE4E7EC)),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                OutlinedButton(
+                  onPressed: widget.onCancel,
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xFF344054),
+                    side: const BorderSide(color: Color(0xFFD0D5DD)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                  ),
+                  child: const Text(
+                    'Cancel',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                ElevatedButton(
+                  onPressed: _save,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFFF6A00),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 14,
+                    ),
+                  ),
+                  child: const Text(
+                    'Save Topics',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _TopicTableHeader extends StatelessWidget {
+  const _TopicTableHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    const labelStyle = TextStyle(
+      color: Color(0xFF667085),
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+    );
+
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(14, 14, 14, 12),
+      child: Row(
+        children: [
+          SizedBox(width: 44, child: Text('#', style: labelStyle)),
+          Expanded(flex: 3, child: Text('TOPIC NAME', style: labelStyle)),
+          SizedBox(width: 12),
+          Expanded(flex: 2, child: Text('ALIAS', style: labelStyle)),
+          SizedBox(width: 12),
+          Expanded(flex: 4, child: Text('DESCRIPTION', style: labelStyle)),
+          SizedBox(width: 12),
+          SizedBox(width: 44, child: Text('ACTIONS', style: labelStyle)),
+        ],
+      ),
+    );
+  }
+}
+
+class TopicRow extends StatelessWidget {
+  final int index;
+  final TextEditingController nameController;
+  final TextEditingController aliasController;
+  final TextEditingController descriptionController;
+  final VoidCallback onDelete;
+
+  const TopicRow({
+    super.key,
+    required this.index,
+    required this.nameController,
+    required this.aliasController,
+    required this.descriptionController,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 44,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 14),
+              child: Text(
+                '$index',
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Color(0xFFFF5D00),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: _RoundedInput(
+              controller: nameController,
+              hintText: 'Enter topic name',
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 2,
+            child: _RoundedInput(
+              controller: aliasController,
+              hintText: 'Enter alias',
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 4,
+            child: _RoundedInput(
+              controller: descriptionController,
+              hintText: 'Add a short description',
+              minLines: 2,
+              maxLines: 3,
+            ),
+          ),
+          const SizedBox(width: 12),
+          SizedBox(
+            width: 44,
+            child: IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete_outline),
+              color: const Color(0xFFF04438),
+              splashRadius: 18,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _RoundedInput extends StatelessWidget {
+  final TextEditingController controller;
+  final String hintText;
+  final int minLines;
+  final int maxLines;
+
+  const _RoundedInput({
+    required this.controller,
+    required this.hintText,
+    this.minLines = 1,
+    this.maxLines = 1,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      minLines: minLines,
+      maxLines: maxLines,
+      decoration: InputDecoration(
+        hintText: hintText,
+        hintStyle: const TextStyle(color: Color(0xFF98A2B3)),
+        isDense: true,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD0D5DD)),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFFD0D5DD)),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF98A2B3)),
+        ),
+      ),
+    );
+  }
+}
+
+class _TopicEditingRow {
+  final String id = UniqueKey().toString();
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController aliasController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
+
+  Topic toTopic() {
+    return Topic(
+      name: nameController.text.trim(),
+      alias: aliasController.text.trim(),
+      description: descriptionController.text.trim(),
+    );
+  }
+
+  void clear() {
+    nameController.clear();
+    aliasController.clear();
+    descriptionController.clear();
+  }
+
+  void dispose() {
+    nameController.dispose();
+    aliasController.dispose();
+    descriptionController.dispose();
   }
 }
