@@ -122,6 +122,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context).pushNamed(Routes.cronjobList);
                 },
               ),
+              SizedBox(height: 20),
+              _buildNavigationButton(
+                context,
+                title: 'Integrations',
+                description: 'Manage Google connections and metrics',
+                icon: Icons.integration_instructions,
+                color: Colors.indigo,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.integrations);
+                },
+              ),
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import 'package:boilerplate/presentation/all_posts/all_posts_screen.dart';
 import 'package:boilerplate/presentation/ai_writer/ai_writer_screen.dart';
 import 'package:boilerplate/presentation/auto_generation/auto_generation_screen.dart';
 import 'package:boilerplate/presentation/cronjob/routes/cronjob_routes.dart';
+import 'package:boilerplate/presentation/integrations/integrations_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -29,6 +30,7 @@ class Routes {
   static const String allPosts = '/all-posts';
   static const String aiWriter = '/ai-writer';
   static const String autoGeneration = '/auto-generation';
+  static const String integrations = '/integrations';
   
   // Cronjob routes
   static const String cronjobList = '/cronjob/list';
@@ -49,6 +51,7 @@ class Routes {
     aiWriter: (BuildContext context) => AiWriterScreen(),
     autoGeneration: (BuildContext context) => AutoGenerationScreen(),
     templateLibrary: (BuildContext context) => TemplateLibraryScreen(),
+    integrations: (BuildContext context) => const IntegrationsScreen(),
     //analytic: (BuildContext context) => AnalyticScreen(),
   };
   
