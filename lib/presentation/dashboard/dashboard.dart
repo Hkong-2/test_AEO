@@ -38,7 +38,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context).pushNamed(Routes.overview);
                 },
               ),
-			  SizedBox(height: 20),
+              SizedBox(height: 20),
               _buildNavigationButton(
                 context,
                 title: 'SEO Content Optimization',
@@ -147,6 +147,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     MaterialPageRoute(
                         builder: (context) => PlanningRecommendationsScreen()),
                   );
+                },
+              ),
+              SizedBox(height: 20),
+              _buildNavigationButton(
+                context,
+                title: 'Topics & Keywords',
+                description: 'Topics & Keywords',
+                icon: Icons.table_rows,
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.topicsKeywords);
+                },
+              ),
+              SizedBox(height: 20),
+              _buildNavigationButton(
+                context,
+                title: 'Prompt Library',
+                description: 'Open prompt library',
+                icon: Icons.library_books,
+                color: Colors.deepOrange,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.promptLibrary);
                 },
               ),
             ],
