@@ -4,6 +4,7 @@ import 'package:boilerplate/presentation/login/login.dart';
 import 'package:boilerplate/presentation/register/register.dart';
 import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/overview/overview.dart';
+import 'package:boilerplate/presentation/performance_monitoring/performance_monitoring_screen.dart';
 import 'package:boilerplate/presentation/seo_optimization/seo_optimization.dart';
 import 'package:boilerplate/presentation/template_library/template_library_screen.dart';
 import 'package:boilerplate/presentation/all_posts/all_posts_screen.dart';
@@ -24,6 +25,7 @@ class Routes {
   static const String forgotPassword = '/forgot-password';
   static const String home = '/post';
   static const String overview = '/overview';
+  static const String performanceMonitoring = '/performance-monitoring';
   static const String templateLibrary = '/template_library';
   static const String analytic = '/analytic';
   static const String seoOptimization = '/seo-optimization';
@@ -45,6 +47,7 @@ class Routes {
     forgotPassword: (BuildContext context) => ForgotPasswordScreen(),
     home: (BuildContext context) => HomeScreen(),
     overview: (BuildContext context) => OverviewScreen(),
+    performanceMonitoring: (BuildContext context) => PerformanceMonitoringScreen(),
     seoOptimization: (BuildContext context) => SeoOptimizationScreen(),
     allPosts: (BuildContext context) => AllPostsScreen(),
     aiWriter: (BuildContext context) => AiWriterScreen(),

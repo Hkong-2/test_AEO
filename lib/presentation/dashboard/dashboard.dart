@@ -38,6 +38,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Navigator.of(context).pushNamed(Routes.overview);
                 },
               ),
+              SizedBox(height: 20),
+              _buildNavigationButton(
+                context,
+                title: 'Performance Monitoring',
+                description: 'Track brand visibility trends and performance',
+                icon: Icons.auto_graph,
+                color: Colors.deepOrange,
+                onPressed: () {
+                  Navigator.of(context).pushNamed(Routes.performanceMonitoring);
+                },
+              ),
 			  SizedBox(height: 20),
               _buildNavigationButton(
                 context,
