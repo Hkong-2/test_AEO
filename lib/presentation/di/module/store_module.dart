@@ -11,10 +11,6 @@ import 'package:boilerplate/domain/usecase/content/enhance_content_usecase.dart'
 import 'package:boilerplate/domain/usecase/content/humanize_content_usecase.dart';
 import 'package:boilerplate/domain/usecase/content/rewrite_content_usecase.dart';
 import 'package:boilerplate/domain/usecase/content/summarize_content_usecase.dart';
-import 'package:boilerplate/domain/usecase/seo/get_audit_history_usecase.dart';
-import 'package:boilerplate/domain/usecase/seo/get_audit_status_usecase.dart';
-import 'package:boilerplate/domain/usecase/seo/get_crawler_events_usecase.dart';
-import 'package:boilerplate/domain/usecase/seo/run_seo_audit_usecase.dart';
 import 'package:boilerplate/presentation/content_enhancement/store/content_enhancement_store.dart';
 import 'package:boilerplate/presentation/forgot_password/store/forgot_password_store.dart';
 import 'package:boilerplate/presentation/home/store/language/language_store.dart';
@@ -31,7 +27,6 @@ import 'package:boilerplate/domain/usecase/cronjob/create_execution_usecase.dart
 import 'package:boilerplate/data/service/mock_execution_service.dart';
 import 'package:boilerplate/presentation/login/store/login_store.dart';
 import 'package:boilerplate/presentation/post/store/post_store.dart';
-import 'package:boilerplate/presentation/technical_seo/store/technical_seo_store.dart';
 import 'package:boilerplate/presentation/register/store/register_store.dart';
 import 'package:boilerplate/presentation/overview/store/overview_store.dart';
 import 'package:boilerplate/presentation/template_library/store/template_library_store.dart';
@@ -90,16 +85,6 @@ class StoreModule {
         getIt<RewriteContentUseCase>(),
         getIt<HumanizeContentUseCase>(),
         getIt<SummarizeContentUseCase>(),
-        getIt<ErrorStore>(),
-      ),
-    );
-
-    getIt.registerSingleton<TechnicalSeoStore>(
-      TechnicalSeoStore(
-        getIt<RunSeoAuditUseCase>(),
-        getIt<GetAuditStatusUseCase>(),
-        getIt<GetAuditHistoryUseCase>(),
-        getIt<GetCrawlerEventsUseCase>(),
         getIt<ErrorStore>(),
       ),
     );

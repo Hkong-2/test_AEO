@@ -6,7 +6,6 @@ import 'package:boilerplate/presentation/register/register.dart';
 import 'package:boilerplate/presentation/dashboard/dashboard.dart';
 import 'package:boilerplate/presentation/overview/overview.dart';
 import 'package:boilerplate/presentation/seo_optimization/seo_optimization.dart';
-import 'package:boilerplate/presentation/technical_seo/technical_seo_screen.dart';
 import 'package:boilerplate/presentation/topics_keywords/topics_keywords.dart';
 import 'package:boilerplate/presentation/template_library/template_library_screen.dart';
 import 'package:boilerplate/presentation/all_posts/all_posts_screen.dart';
@@ -53,7 +52,6 @@ class Routes {
     forgotPassword: (BuildContext context) => ForgotPasswordScreen(),
     home: (BuildContext context) => HomeScreen(),
     contentEnhancement: (BuildContext context) => const ContentEnhancementScreen(),
-    technicalSeo: (BuildContext context) => const TechnicalSeoScreen(),
     overview: (BuildContext context) => OverviewScreen(),
     seoOptimization: (BuildContext context) => SeoOptimizationScreen(),
     topicsKeywords: (BuildContext context) => TopicsKeywordsScreen(),
