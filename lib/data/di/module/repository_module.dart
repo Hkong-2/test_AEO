@@ -19,8 +19,8 @@ import 'package:boilerplate/domain/repository/post/post_repository.dart';
 import 'package:boilerplate/domain/repository/seo/seo_repository.dart';
 import 'package:boilerplate/domain/repository/setting/setting_repository.dart';
 import 'package:boilerplate/domain/repository/user/user_repository.dart';
-import 'package:boilerplate/domain/repository/seo_repository.dart';
-import 'package:boilerplate/data/repository/seo_repository_impl.dart';
+import 'package:boilerplate/domain/repository/seo_repository.dart' as seo_opt;
+import 'package:boilerplate/data/repository/seo_repository_impl.dart' as seo_opt;
 
 import '../../../di/service_locator.dart';
 
@@ -46,6 +46,10 @@ class RepositoryModule {
 
     getIt.registerSingleton<SeoRepository>(
       SeoRepositoryImpl(getIt<SeoApi>(), getIt<SeoAuditDataSource>()),
+    );
+
+    getIt.registerSingleton<seo_opt.SeoRepository>(
+      seo_opt.SeoRepositoryImpl(),
     );
 
     // cronjob repository:------------------------------------------------------
