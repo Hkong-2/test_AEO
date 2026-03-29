@@ -44,5 +44,8 @@ class RepositoryModule {
     getIt.registerSingleton<CronjobRepository>(CronjobRepositoryImpl(
       localDataSource: getIt<CronjobDataSourceImpl>(),
     ));
+
+    // seo repository:----------------------------------------------------------
+    getIt.registerSingleton<SeoRepository>(SeoRepositoryImpl());
   }
 }
