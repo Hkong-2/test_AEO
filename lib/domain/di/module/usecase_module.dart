@@ -1,7 +1,17 @@
 import 'dart:async';
 
+import 'package:boilerplate/domain/repository/content/content_repository.dart';
 import 'package:boilerplate/domain/repository/post/post_repository.dart';
+import 'package:boilerplate/domain/repository/seo/seo_repository.dart';
 import 'package:boilerplate/domain/repository/user/user_repository.dart';
+import 'package:boilerplate/domain/usecase/seo/get_audit_history_usecase.dart';
+import 'package:boilerplate/domain/usecase/seo/get_audit_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/seo/get_crawler_events_usecase.dart';
+import 'package:boilerplate/domain/usecase/seo/run_seo_audit_usecase.dart';
+import 'package:boilerplate/domain/usecase/content/enhance_content_usecase.dart';
+import 'package:boilerplate/domain/usecase/content/humanize_content_usecase.dart';
+import 'package:boilerplate/domain/usecase/content/rewrite_content_usecase.dart';
+import 'package:boilerplate/domain/usecase/content/summarize_content_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/delete_post_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/find_post_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/post/get_post_usecase.dart';
@@ -19,8 +29,13 @@ import 'package:boilerplate/domain/usecase/cronjob/get_cronjob_executions_usecas
 import 'package:boilerplate/domain/usecase/cronjob/create_execution_usecase.dart';
 import 'package:boilerplate/domain/usecase/cronjob/get_execution_by_id_usecase.dart';
 import 'package:boilerplate/domain/repository/cronjob_repository.dart';
-import 'package:boilerplate/domain/repository/seo_repository.dart';
+import 'package:boilerplate/domain/repository/seo_repository.dart' as seo_opt;
 import 'package:boilerplate/domain/usecase/seo/get_seo_data_usecase.dart';
+import 'package:boilerplate/domain/repository/trend/trend_repository.dart';
+import 'package:boilerplate/domain/usecase/trend/get_weekly_report_usecase.dart';
+import 'package:boilerplate/domain/usecase/trend/get_trend_data_usecase.dart';
+import 'package:boilerplate/domain/usecase/trend/get_performance_comparisons_usecase.dart';
+import 'package:boilerplate/domain/usecase/trend/get_improvement_suggestions_usecase.dart';
 
 import '../../../di/service_locator.dart';
 
@@ -54,6 +69,33 @@ class UseCaseModule {
       DeletePostUseCase(getIt<PostRepository>()),
     );
 
+    // content:-----------------------------------------------------------------
+    getIt.registerSingleton<EnhanceContentUseCase>(
+      EnhanceContentUseCase(getIt<ContentRepository>()),
+    );
+    getIt.registerSingleton<RewriteContentUseCase>(
+      RewriteContentUseCase(getIt<ContentRepository>()),
+    );
+    getIt.registerSingleton<HumanizeContentUseCase>(
+      HumanizeContentUseCase(getIt<ContentRepository>()),
+    );
+    getIt.registerSingleton<SummarizeContentUseCase>(
+      SummarizeContentUseCase(getIt<ContentRepository>()),
+    );
+
+    // seo:--------------------------------------------------------------------
+    getIt.registerSingleton<RunSeoAuditUseCase>(
+      RunSeoAuditUseCase(getIt<SeoRepository>()),
+    );
+    getIt.registerSingleton<GetAuditStatusUseCase>(
+      GetAuditStatusUseCase(getIt<SeoRepository>()),
+    );
+    getIt.registerSingleton<GetAuditHistoryUseCase>(
+      GetAuditHistoryUseCase(getIt<SeoRepository>()),
+    );
+    getIt.registerSingleton<GetCrawlerEventsUseCase>(
+      GetCrawlerEventsUseCase(getIt<SeoRepository>()),
+    );
     // cronjob:-----------------------------------------------------------------
     getIt.registerSingleton<GetAllCronjobsUseCase>(
       GetAllCronjobsUseCase(repository: getIt<CronjobRepository>()),
@@ -80,9 +122,23 @@ class UseCaseModule {
       GetExecutionByIdUseCase(repository: getIt<CronjobRepository>()),
     );
 
-    // seo:---------------------------------------------------------------------
+    // seo optimization:--------------------------------------------------------
     getIt.registerSingleton<GetSeoDataUseCase>(
-      GetSeoDataUseCase(repository: getIt<SeoRepository>()),
+      GetSeoDataUseCase(repository: getIt<seo_opt.SeoRepository>()),
+    );
+
+    // trend:-------------------------------------------------------------------
+    getIt.registerSingleton<GetWeeklyReportUseCase>(
+      GetWeeklyReportUseCase(repository: getIt<TrendRepository>()),
+    );
+    getIt.registerSingleton<GetTrendDataUseCase>(
+      GetTrendDataUseCase(repository: getIt<TrendRepository>()),
+    );
+    getIt.registerSingleton<GetPerformanceComparisonsUseCase>(
+      GetPerformanceComparisonsUseCase(repository: getIt<TrendRepository>()),
+    );
+    getIt.registerSingleton<GetImprovementSuggestionsUseCase>(
+      GetImprovementSuggestionsUseCase(repository: getIt<TrendRepository>()),
     );
   }
 }
