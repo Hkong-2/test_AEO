@@ -21,6 +21,12 @@ class AuthApi {
         },
       );
       return res.data;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 409) {
+        throw "A user with this email already exists";
+      }
+      print(e.toString());
+      throw e;
     } catch (e) {
       print(e.toString());
       throw e;
