@@ -11,6 +11,11 @@ import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'dart:async';
+import 'package:boilerplate/utils/pkce/pkce_utils.dart';
+import 'package:boilerplate/core/config/environment_config.dart';
+import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 
 import '../../di/service_locator.dart';
 
@@ -42,6 +47,26 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _passwordFocusNode = FocusNode();
+    _checkGoogleRedirect();
+  }
+
+  void _checkGoogleRedirect() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final uri = Uri.base;
+      if (uri.queryParameters.containsKey('code')) {
+        final code = uri.queryParameters['code']!;
+        final sharedPrefsHelper = getIt<SharedPreferenceHelper>();
+        final codeVerifier = await sharedPrefsHelper.codeVerifier;
+
+        if (codeVerifier != null && codeVerifier.isNotEmpty) {
+          final redirectUri = '${uri.scheme}://${uri.host}:${uri.port}/auth/google/callback';
+          _userStore.loginGoogle(code, codeVerifier, redirectUri);
+          await sharedPrefsHelper.removeCodeVerifier();
+        } else {
+          _showErrorMessage('Google login failed. Missing code verifier.');
+        }
+      }
+    });
   }
 
   @override
@@ -388,15 +413,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _buildGoogleSignInButton() {
     bool isDark = _themeStore.darkMode;
+    final envConfig = getIt<EnvironmentConfig>();
+
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          _showErrorMessage('Google Sign-In - Mock Implementation');
-          // Mock Google Sign-In
-          Future.delayed(const Duration(seconds: 1), () {
-            _userStore.login('user@google.com', 'mock_password');
-          });
+        onTap: () async {
+          final clientId = envConfig.googleClientId;
+          final redirectUri = '${Uri.base.scheme}://${Uri.base.host}:${Uri.base.port}/auth/google/callback';
+
+          final codeVerifier = PkceUtils.generateCodeVerifier();
+          final codeChallenge = PkceUtils.generateCodeChallenge(codeVerifier);
+
+          final sharedPrefsHelper = getIt<SharedPreferenceHelper>();
+          await sharedPrefsHelper.saveCodeVerifier(codeVerifier);
+
+          final authorizationUrl = Uri.parse('https://accounts.google.com/o/oauth2/v2/auth').replace(
+            queryParameters: {
+              'client_id': clientId,
+              'redirect_uri': redirectUri,
+              'response_type': 'code',
+              'scope': 'email profile',
+              'code_challenge': codeChallenge,
+              'code_challenge_method': 'S256',
+            },
+          );
+
+          if (await canLaunchUrl(authorizationUrl)) {
+            await launchUrl(authorizationUrl, mode: LaunchMode.externalApplication);
+          } else {
+            _showErrorMessage('Could not launch Google Sign In');
+          }
         },
         borderRadius: BorderRadius.circular(12.0),
         child: Container(

@@ -4,6 +4,7 @@ import 'package:boilerplate/domain/repository/user/user_repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 
 import '../../../domain/usecase/user/login_usecase.dart';
+import '../../../domain/usecase/user/login_google_usecase.dart';
 import '../../network/apis/auth/auth_api.dart';
 
 class UserRepositoryImpl extends UserRepository {
@@ -18,6 +19,16 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<dynamic> login(LoginParams params) async {
     final response = await _authApi.login(params.username, params.password);
+    return response;
+  }
+
+  @override
+  Future<dynamic> loginGoogle(LoginGoogleParams params) async {
+    final response = await _authApi.loginGoogle(
+      params.code,
+      params.codeVerifier,
+      params.redirectUri,
+    );
     return response;
   }
 

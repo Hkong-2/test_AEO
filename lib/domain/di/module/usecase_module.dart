@@ -22,6 +22,7 @@ import 'package:boilerplate/domain/usecase/user/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/signup_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/save_auth_token_usecase.dart';
+import 'package:boilerplate/domain/usecase/user/login_google_usecase.dart';
 import 'package:boilerplate/domain/usecase/cronjob/get_all_cronjobs_usecase.dart';
 import 'package:boilerplate/domain/usecase/cronjob/get_cronjob_by_id_usecase.dart';
 import 'package:boilerplate/domain/usecase/cronjob/create_cronjob_usecase.dart';
@@ -55,6 +56,9 @@ class UseCaseModule {
     );
     getIt.registerSingleton<LoginUseCase>(
       LoginUseCase(getIt<UserRepository>()),
+    );
+    getIt.registerSingleton<LoginGoogleUseCase>(
+      LoginGoogleUseCase(getIt<UserRepository>()),
     );
     getIt.registerSingleton<SignupUseCase>(
       SignupUseCase(getIt<UserRepository>()),

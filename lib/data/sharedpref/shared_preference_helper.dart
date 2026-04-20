@@ -29,6 +29,18 @@ class SharedPreferenceHelper {
     return _sharedPreference.getBool(Preferences.is_logged_in) ?? false;
   }
 
+  Future<String?> get codeVerifier async {
+    return _sharedPreference.getString(Preferences.code_verifier);
+  }
+
+  Future<bool> saveCodeVerifier(String verifier) async {
+    return _sharedPreference.setString(Preferences.code_verifier, verifier);
+  }
+
+  Future<bool> removeCodeVerifier() async {
+    return _sharedPreference.remove(Preferences.code_verifier);
+  }
+
   Future<bool> saveIsLoggedIn(bool value) async {
     return _sharedPreference.setBool(Preferences.is_logged_in, value);
   }

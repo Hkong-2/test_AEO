@@ -35,6 +35,36 @@ class AuthApi {
     }
   }
 
+  /// Returns the access token for Google login.
+  Future<dynamic> loginGoogle(String code, String codeVerifier, String redirectUri) async {
+    try {
+      final res = await _dioClient.dio.post(
+        Endpoints.loginGoogle,
+        data: {
+          "code": code,
+          "codeVerifier": codeVerifier,
+          "redirectUri": redirectUri,
+        },
+      );
+      return res.data;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 400) {
+        throw "Invalid input data or missing required fields";
+      }
+      if (e.response?.statusCode == 401) {
+        throw "Invalid Google authorization code or PKCE verification failed";
+      }
+      if (e.response?.statusCode == 409) {
+        throw "Email already registered with standard login";
+      }
+      print(e.toString());
+      throw e;
+    } catch (e) {
+      print(e.toString());
+      throw e;
+    }
+  }
+
   /// Returns the response body containing the success message and user ID.
   Future<dynamic> signup(String fullName, String email, String password) async {
     try {

@@ -39,6 +39,7 @@ class ServiceLocator {
             'http://localhost:8080',
         sentryDsn: dotenv.env['SENTRY_DSN'] ?? '',
         analyticsEnabled: dotenv.env['ANALYTICS_ENABLED'] == 'true',
+        googleClientId: dotenv.env['GOOGLE_CLIENT_ID'] ?? '195844443608-oj82c11fvpfiekkigjjgdofeuv6nsjs2.apps.googleusercontent.com',
       ),
     );
   }

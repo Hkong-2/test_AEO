@@ -6,6 +6,7 @@ import 'package:boilerplate/domain/usecase/user/save_auth_token_usecase.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../domain/usecase/user/login_usecase.dart';
+import '../../../domain/usecase/user/login_google_usecase.dart';
 
 part 'login_store.g.dart';
 
@@ -18,6 +19,7 @@ abstract class _UserStore with Store {
     this._saveLoginStatusUseCase,
     this._saveAuthTokenUseCase,
     this._loginUseCase,
+    this._loginGoogleUseCase,
     this.formErrorStore,
     this.errorStore,
   ) {
@@ -35,6 +37,7 @@ abstract class _UserStore with Store {
   final SaveLoginStatusUseCase _saveLoginStatusUseCase;
   final SaveAuthTokenUseCase _saveAuthTokenUseCase;
   final LoginUseCase _loginUseCase;
+  final LoginGoogleUseCase _loginGoogleUseCase;
 
   // stores:--------------------------------------------------------------------
   // for handling form errors
@@ -90,6 +93,34 @@ abstract class _UserStore with Store {
         errorStore.setErrorMessage('');
       } else {
         errorStore.setErrorMessage('Login failed. No token received.');
+      }
+    }).catchError((e) {
+      this.isLoggedIn = false;
+      this.success = false;
+      errorStore.setErrorMessage(e.toString());
+    });
+  }
+
+  @action
+  Future loginGoogle(String code, String codeVerifier, String redirectUri) async {
+    final LoginGoogleParams loginParams = LoginGoogleParams(
+      code: code,
+      codeVerifier: codeVerifier,
+      redirectUri: redirectUri,
+    );
+
+    final future = _loginGoogleUseCase.call(params: loginParams);
+    loginFuture = ObservableFuture(future);
+
+    await future.then((value) async {
+      if (value != null && value['accessToken'] != null) {
+        await _saveAuthTokenUseCase.call(params: value['accessToken']);
+        await _saveLoginStatusUseCase.call(params: true);
+        this.isLoggedIn = true;
+        this.success = true;
+        errorStore.setErrorMessage('');
+      } else {
+        errorStore.setErrorMessage('Google Login failed. No token received.');
       }
     }).catchError((e) {
       this.isLoggedIn = false;

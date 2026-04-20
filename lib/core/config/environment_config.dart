@@ -8,6 +8,7 @@ class EnvironmentConfig {
   final String aiApiBaseUrl;
   final String sentryDsn;
   final bool analyticsEnabled;
+  final String googleClientId;
 
   const EnvironmentConfig({
     required this.environment,
@@ -15,6 +16,7 @@ class EnvironmentConfig {
     required this.aiApiBaseUrl,
     this.sentryDsn = '',
     this.analyticsEnabled = false,
+    this.googleClientId = '',
   });
 
   /// Default dev config used when .env is not available
@@ -25,6 +27,7 @@ class EnvironmentConfig {
       aiApiBaseUrl: 'http://localhost:8080',
       sentryDsn: '',
       analyticsEnabled: false,
+      googleClientId: '195844443608-oj82c11fvpfiekkigjjgdofeuv6nsjs2.apps.googleusercontent.com',
     );
   }
 

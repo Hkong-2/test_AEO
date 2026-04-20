@@ -55,6 +55,16 @@ mixin _$UserStore on _UserStore, Store {
     return _$loginAsyncAction.run(() => super.login(email, password));
   }
 
+  late final _$loginGoogleAsyncAction =
+      AsyncAction('_UserStore.loginGoogle', context: context);
+
+  @override
+  Future<dynamic> loginGoogle(
+      String code, String codeVerifier, String redirectUri) {
+    return _$loginGoogleAsyncAction
+        .run(() => super.loginGoogle(code, codeVerifier, redirectUri));
+  }
+
   @override
   String toString() {
     return '''
