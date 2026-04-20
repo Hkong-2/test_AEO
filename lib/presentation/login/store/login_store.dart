@@ -76,12 +76,13 @@ abstract class _UserStore with Store {
 
     await future.then((value) async {
       if (value != null) {
+        errorStore.setErrorMessage('');
         await _saveLoginStatusUseCase.call(params: true);
         this.isLoggedIn = true;
         this.success = true;
       }
     }).catchError((e) {
-      print(e);
+      errorStore.setErrorMessage(e.toString().replaceFirst('Exception: ', ''));
       this.isLoggedIn = false;
       this.success = false;
       throw e;

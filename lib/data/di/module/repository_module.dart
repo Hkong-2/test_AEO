@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:boilerplate/data/local/datasource/cronjob_datasource_impl.dart';
 import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
 import 'package:boilerplate/data/local/datasources/seo/seo_audit_datasource.dart';
+import 'package:boilerplate/data/network/apis/auth/auth_api.dart';
 import 'package:boilerplate/data/network/apis/content/content_api.dart';
 import 'package:boilerplate/data/network/apis/posts/post_api.dart';
 import 'package:boilerplate/data/network/apis/seo/seo_api.dart';
@@ -20,7 +21,8 @@ import 'package:boilerplate/domain/repository/seo/seo_repository.dart';
 import 'package:boilerplate/domain/repository/setting/setting_repository.dart';
 import 'package:boilerplate/domain/repository/user/user_repository.dart';
 import 'package:boilerplate/domain/repository/seo_repository.dart' as seo_opt;
-import 'package:boilerplate/data/repository/seo_repository_impl.dart' as seo_opt;
+import 'package:boilerplate/data/repository/seo_repository_impl.dart'
+    as seo_opt;
 import 'package:boilerplate/domain/repository/trend/trend_repository.dart';
 import 'package:boilerplate/data/repository/trend/trend_repository_impl.dart';
 
@@ -35,6 +37,7 @@ class RepositoryModule {
 
     getIt.registerSingleton<UserRepository>(UserRepositoryImpl(
       getIt<SharedPreferenceHelper>(),
+      getIt<AuthApi>(),
     ));
 
     getIt.registerSingleton<PostRepository>(PostRepositoryImpl(

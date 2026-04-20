@@ -1,5 +1,6 @@
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
+import 'package:boilerplate/domain/usecase/user/sign_up_usecase.dart';
 import 'package:mobx/mobx.dart';
 
 part 'register_store.g.dart';
@@ -9,6 +10,7 @@ class RegisterStore = _RegisterStore with _$RegisterStore;
 abstract class _RegisterStore with Store {
   // constructor:---------------------------------------------------------------
   _RegisterStore(
+    this._signUpUseCase,
     this.formErrorStore,
     this.errorStore,
   ) {
@@ -17,6 +19,8 @@ abstract class _RegisterStore with Store {
   }
 
   // stores:--------------------------------------------------------------------
+  final SignUpUseCase _signUpUseCase;
+
   // for handling form errors
   final FormErrorStore formErrorStore;
 
@@ -53,7 +57,14 @@ abstract class _RegisterStore with Store {
   @action
   Future<void> register(
       String email, String password, String confirmPassword) async {
-    // Mock validation
+    final trimmedFullName = fullName.trim();
+    final trimmedEmail = email.trim();
+
+    if (trimmedFullName.isEmpty) {
+      errorStore.setErrorMessage('Please enter your full name');
+      return;
+    }
+
     if (email.isEmpty || password.isEmpty || confirmPassword.isEmpty) {
       errorStore.setErrorMessage('All fields are required');
       return;
@@ -69,10 +80,12 @@ abstract class _RegisterStore with Store {
       return;
     }
 
-    // Simulate network call
-    final future = Future<bool>.delayed(
-      const Duration(seconds: 2),
-      () => true,
+    final future = _signUpUseCase.call(
+      params: SignUpParams(
+        fullName: trimmedFullName,
+        email: trimmedEmail,
+        password: password,
+      ),
     );
 
     registerFuture = ObservableFuture(future);
@@ -81,10 +94,20 @@ abstract class _RegisterStore with Store {
       if (value) {
         success = true;
         errorStore.setErrorMessage('');
+      } else {
+        errorStore.setErrorMessage('Sign up failed. Please try again.');
       }
     }).catchError((error) {
-      errorStore.setErrorMessage(error.toString());
+      errorStore
+          .setErrorMessage(error.toString().replaceFirst('Exception: ', ''));
     });
+  }
+
+  String fullName = '';
+
+  @action
+  void setFullName(String value) {
+    fullName = value;
   }
 
   @action

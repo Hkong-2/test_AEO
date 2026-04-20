@@ -82,7 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) {
             return _userStore.success
                 ? navigate(context)
-                : _showErrorMessage(_formStore.errorStore.errorMessage);
+                : _showErrorMessage(_userStore.errorStore.errorMessage);
           },
         ),
         Observer(
@@ -254,6 +254,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ? Colors.grey.shade400
               : Colors.blueGrey.shade400,
           textController: _userEmailController,
+          maxLength: 255,
           inputAction: TextInputAction.next,
           autoFocus: false,
           onChanged: (value) {
@@ -441,7 +442,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     Future.delayed(const Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home, (Route<dynamic> route) => false);
+          Routes.dashboard, (Route<dynamic> route) => false);
     });
 
     return Container();

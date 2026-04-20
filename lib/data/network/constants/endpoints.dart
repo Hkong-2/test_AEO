@@ -16,6 +16,10 @@ class Endpoints {
   // post endpoints
   static const String getPosts = "/posts";
 
+  // auth endpoints
+  static const String login = "/api/auth/login";
+  static const String signup = "/api/auth/signup";
+
   // content enhancement endpoints (AI service)
   static const String contentBase = "/api/v1/content";
   static String contentOperation(String op) => "$contentBase/$op";

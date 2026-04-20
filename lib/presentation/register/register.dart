@@ -1,5 +1,4 @@
 import 'package:another_flushbar/flushbar_helper.dart';
-import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/widgets/empty_app_bar_widget.dart';
 import 'package:boilerplate/core/widgets/progress_indicator_widget.dart';
 import 'package:boilerplate/core/widgets/rounded_button_widget.dart';
@@ -7,7 +6,6 @@ import 'package:boilerplate/core/widgets/textfield_widget.dart';
 import 'package:boilerplate/presentation/home/store/theme/theme_store.dart';
 import 'package:boilerplate/presentation/register/store/register_store.dart';
 import 'package:boilerplate/utils/device/device_utils.dart';
-import 'package:boilerplate/utils/locale/app_localization.dart';
 import 'package:boilerplate/utils/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -27,7 +25,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   //stores:---------------------------------------------------------------------
   final ThemeStore _themeStore = getIt<ThemeStore>();
   final RegisterStore _registerStore = getIt<RegisterStore>();
-  final ErrorStore _errorStore = getIt<ErrorStore>();
 
   //focus nodes:----------------------------------------------------------------
   late FocusNode _emailFocusNode;
@@ -80,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           builder: (context) {
             return _registerStore.success
                 ? navigate(context)
-                : _showErrorMessage(_errorStore.errorMessage);
+                : _showErrorMessage(_registerStore.errorStore.errorMessage);
           },
         ),
         Observer(
@@ -245,7 +242,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       textController: _fullnameController,
       inputAction: TextInputAction.next,
       autoFocus: true,
-      onChanged: (value) {},
+      onChanged: (value) {
+        _registerStore.setFullName(value);
+      },
       onFieldSubmitted: (value) {
         FocusScope.of(context).requestFocus(_emailFocusNode);
       },
@@ -261,6 +260,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       iconColor: _accentColor,
       textController: _emailController,
       focusNode: _emailFocusNode,
+      maxLength: 255,
       inputAction: TextInputAction.next,
       autoFocus: false,
       onChanged: (value) {},
@@ -322,28 +322,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
         DeviceUtils.hideKeyboard(context);
 
         if (_fullnameController.text.isEmpty) {
-          _errorStore.setErrorMessage('Please enter your full name');
+          _registerStore.errorStore
+              .setErrorMessage('Please enter your full name');
           _showErrorMessage('Please enter your full name');
           return;
         }
 
         if (_emailController.text.isEmpty) {
-          _errorStore.setErrorMessage('Please enter your email');
+          _registerStore.errorStore.setErrorMessage('Please enter your email');
           _showErrorMessage('Please enter your email');
           return;
         }
 
         if (_passwordController.text.isEmpty) {
-          _errorStore.setErrorMessage('Please enter your password');
+          _registerStore.errorStore
+              .setErrorMessage('Please enter your password');
           _showErrorMessage('Please enter your password');
           return;
         }
 
         if (_passwordController.text.length < 6) {
-          _errorStore.setErrorMessage('Password must be at least 6 characters');
+          _registerStore.errorStore
+              .setErrorMessage('Password must be at least 6 characters');
           _showErrorMessage('Password must be at least 6 characters');
           return;
         }
+
+        _registerStore.setFullName(_fullnameController.text);
 
         await _registerStore.register(
           _emailController.text,
@@ -390,9 +395,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget navigate(BuildContext context) {
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 300), () {
+      FlushbarHelper.createSuccess(
+        message:
+            'User registered successfully. Please check your email for verification.',
+        title: 'Success',
+        duration: const Duration(seconds: 3),
+      )..show(context);
+    });
+
+    Future.delayed(const Duration(milliseconds: 600), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
-          Routes.home, (Route<dynamic> route) => false);
+          Routes.login, (Route<dynamic> route) => false);
     });
 
     return Container();
