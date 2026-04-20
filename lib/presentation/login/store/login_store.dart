@@ -2,9 +2,9 @@ import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
 import 'package:boilerplate/domain/usecase/user/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
+import 'package:boilerplate/domain/usecase/user/save_auth_token_usecase.dart';
 import 'package:mobx/mobx.dart';
 
-import '../../../domain/entity/user/user.dart';
 import '../../../domain/usecase/user/login_usecase.dart';
 
 part 'login_store.g.dart';
@@ -16,6 +16,7 @@ abstract class _UserStore with Store {
   _UserStore(
     this._isLoggedInUseCase,
     this._saveLoginStatusUseCase,
+    this._saveAuthTokenUseCase,
     this._loginUseCase,
     this.formErrorStore,
     this.errorStore,
@@ -32,6 +33,7 @@ abstract class _UserStore with Store {
   // use cases:-----------------------------------------------------------------
   final IsLoggedInUseCase _isLoggedInUseCase;
   final SaveLoginStatusUseCase _saveLoginStatusUseCase;
+  final SaveAuthTokenUseCase _saveAuthTokenUseCase;
   final LoginUseCase _loginUseCase;
 
   // stores:--------------------------------------------------------------------
@@ -51,7 +53,7 @@ abstract class _UserStore with Store {
   }
 
   // empty responses:-----------------------------------------------------------
-  static ObservableFuture<User?> emptyLoginResponse =
+  static ObservableFuture<dynamic> emptyLoginResponse =
       ObservableFuture.value(null);
 
   // store variables:-----------------------------------------------------------
@@ -61,7 +63,7 @@ abstract class _UserStore with Store {
   bool success = false;
 
   @observable
-  ObservableFuture<User?> loginFuture = emptyLoginResponse;
+  ObservableFuture<dynamic> loginFuture = emptyLoginResponse;
 
   @computed
   bool get isLoading => loginFuture.status == FutureStatus.pending;
@@ -69,22 +71,30 @@ abstract class _UserStore with Store {
   // actions:-------------------------------------------------------------------
   @action
   Future login(String email, String password) async {
+    if (email.isEmpty || password.isEmpty) {
+      errorStore.setErrorMessage('Please enter email and password');
+      return;
+    }
+
     final LoginParams loginParams =
         LoginParams(username: email, password: password);
     final future = _loginUseCase.call(params: loginParams);
     loginFuture = ObservableFuture(future);
 
     await future.then((value) async {
-      if (value != null) {
+      if (value != null && value['accessToken'] != null) {
+        await _saveAuthTokenUseCase.call(params: value['accessToken']);
         await _saveLoginStatusUseCase.call(params: true);
         this.isLoggedIn = true;
         this.success = true;
+        errorStore.setErrorMessage('');
+      } else {
+        errorStore.setErrorMessage('Login failed. No token received.');
       }
     }).catchError((e) {
-      print(e);
       this.isLoggedIn = false;
       this.success = false;
-      throw e;
+      errorStore.setErrorMessage(e.toString());
     });
   }
 

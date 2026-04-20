@@ -15,6 +15,7 @@ class Endpoints {
 
   // auth endpoints
   static const String signup = "/api/auth/signup";
+  static const String login = "/api/auth/login";
 
   // post endpoints
   static const String getPosts = "/posts";

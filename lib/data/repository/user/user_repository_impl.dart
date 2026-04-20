@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:boilerplate/domain/repository/user/user_repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 
-import '../../../domain/entity/user/user.dart';
 import '../../../domain/usecase/user/login_usecase.dart';
 import '../../network/apis/auth/auth_api.dart';
 
@@ -17,8 +16,9 @@ class UserRepositoryImpl extends UserRepository {
 
   // Login:---------------------------------------------------------------------
   @override
-  Future<User?> login(LoginParams params) async {
-    return await Future.delayed(Duration(seconds: 2), () => User());
+  Future<dynamic> login(LoginParams params) async {
+    final response = await _authApi.login(params.username, params.password);
+    return response;
   }
 
   @override
@@ -32,4 +32,8 @@ class UserRepositoryImpl extends UserRepository {
 
   @override
   Future<bool> get isLoggedIn => _sharedPrefsHelper.isLoggedIn;
+
+  @override
+  Future<void> saveAuthToken(String authToken) =>
+      _sharedPrefsHelper.saveAuthToken(authToken);
 }

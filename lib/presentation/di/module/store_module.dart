@@ -8,6 +8,7 @@ import 'package:boilerplate/domain/usecase/user/is_logged_in_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/login_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/signup_usecase.dart';
+import 'package:boilerplate/domain/usecase/user/save_auth_token_usecase.dart';
 import 'package:boilerplate/domain/usecase/content/enhance_content_usecase.dart';
 import 'package:boilerplate/domain/usecase/content/humanize_content_usecase.dart';
 import 'package:boilerplate/domain/usecase/content/rewrite_content_usecase.dart';
@@ -64,6 +65,7 @@ class StoreModule {
       UserStore(
         getIt<IsLoggedInUseCase>(),
         getIt<SaveLoginStatusUseCase>(),
+        getIt<SaveAuthTokenUseCase>(),
         getIt<LoginUseCase>(),
         getIt<FormErrorStore>(),
         getIt<ErrorStore>(),
