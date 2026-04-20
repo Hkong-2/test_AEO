@@ -16,6 +16,8 @@ import 'dart:async';
 import 'package:boilerplate/utils/pkce/pkce_utils.dart';
 import 'package:boilerplate/core/config/environment_config.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:app_links/app_links.dart';
+import 'package:flutter/foundation.dart'; // For kIsWeb
 
 import '../../di/service_locator.dart';
 
@@ -39,6 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //state variables:------------------------------------------------------------
   bool _isPasswordVisible = false;
+  late AppLinks _appLinks;
+  StreamSubscription<Uri>? _linkSubscription;
 
   // Định nghĩa màu cam chuẩn doanh nghiệp (hơi trầm và sang hơn cam chói)
   final Color _primaryOrange = Colors.orange.shade600;
@@ -47,10 +51,61 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _passwordFocusNode = FocusNode();
-    _checkGoogleRedirect();
+    _initAppLinks();
+
+    // Fallback for Web specifically, as app_links works better natively
+    if (kIsWeb) {
+      _checkGoogleRedirectWeb();
+    }
   }
 
-  void _checkGoogleRedirect() {
+  Future<void> _initAppLinks() async {
+    _appLinks = AppLinks();
+
+    // Check initial link if app was cold started from a link
+    try {
+      final Uri? initialUri = await _appLinks.getInitialLink();
+      if (initialUri != null) {
+        _handleDeepLink(initialUri);
+      }
+    } catch (e) {
+      print("Failed to get initial link: \$e");
+    }
+
+    // Attach a listener to incoming links while app is running
+    _linkSubscription = _appLinks.uriLinkStream.listen((Uri? uri) {
+      if (uri != null) {
+        _handleDeepLink(uri);
+      }
+    }, onError: (err) {
+      print("Failed to listen for deep link: \$err");
+    });
+  }
+
+  Future<void> _handleDeepLink(Uri uri) async {
+    final envConfig = getIt<EnvironmentConfig>();
+
+    // Verify it's our OAuth callback URL
+    // e.g. com.boilerplate.aeo:/oauth2redirect
+    if (uri.scheme == Uri.parse(envConfig.googleRedirectUri).scheme) {
+      if (uri.queryParameters.containsKey('code')) {
+        final code = uri.queryParameters['code']!;
+        final sharedPrefsHelper = getIt<SharedPreferenceHelper>();
+        final codeVerifier = await sharedPrefsHelper.codeVerifier;
+
+        if (codeVerifier != null && codeVerifier.isNotEmpty) {
+          _userStore.loginGoogle(code, codeVerifier, envConfig.googleRedirectUri);
+          await sharedPrefsHelper.removeCodeVerifier();
+        } else {
+          _showErrorMessage('Google login failed. Missing code verifier.');
+        }
+      } else if (uri.queryParameters.containsKey('error')) {
+        _showErrorMessage('Google login error: ${uri.queryParameters['error']}');
+      }
+    }
+  }
+
+  void _checkGoogleRedirectWeb() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final uri = Uri.base;
       if (uri.queryParameters.containsKey('code')) {
@@ -420,7 +475,10 @@ class _LoginScreenState extends State<LoginScreen> {
       child: InkWell(
         onTap: () async {
           final clientId = envConfig.googleClientId;
-          final redirectUri = '${Uri.base.scheme}://${Uri.base.host}:${Uri.base.port}/auth/google/callback';
+          // Use envConfig for mobile deep link, Uri.base for web
+          final redirectUri = kIsWeb
+            ? '${Uri.base.scheme}://${Uri.base.host}:${Uri.base.port}/auth/google/callback'
+            : envConfig.googleRedirectUri;
 
           final codeVerifier = PkceUtils.generateCodeVerifier();
           final codeChallenge = PkceUtils.generateCodeChallenge(codeVerifier);
@@ -507,6 +565,7 @@ class _LoginScreenState extends State<LoginScreen> {
   // dispose:-------------------------------------------------------------------
   @override
   void dispose() {
+    _linkSubscription?.cancel();
     _userEmailController.dispose();
     _passwordController.dispose();
     _passwordFocusNode.dispose();
