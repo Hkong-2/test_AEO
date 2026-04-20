@@ -9,6 +9,7 @@ class EnvironmentConfig {
   final String sentryDsn;
   final bool analyticsEnabled;
   final String googleClientId;
+  final String googleRedirectUri;
 
   const EnvironmentConfig({
     required this.environment,
@@ -17,6 +18,7 @@ class EnvironmentConfig {
     this.sentryDsn = '',
     this.analyticsEnabled = false,
     this.googleClientId = '',
+    this.googleRedirectUri = '',
   });
 
   /// Default dev config used when .env is not available
@@ -28,6 +30,7 @@ class EnvironmentConfig {
       sentryDsn: '',
       analyticsEnabled: false,
       googleClientId: '195844443608-oj82c11fvpfiekkigjjgdofeuv6nsjs2.apps.googleusercontent.com',
+      googleRedirectUri: 'com.boilerplate.aeo://oauth2redirect',
     );
   }
 

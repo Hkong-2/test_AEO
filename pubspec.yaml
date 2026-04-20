@@ -69,6 +69,7 @@ dependencies:
   xxtea: ^2.1.0
   url_launcher: ^6.3.2
   crypto: ^3.0.7
+  app_links: ^7.0.0
   # Y
   # Z
 
