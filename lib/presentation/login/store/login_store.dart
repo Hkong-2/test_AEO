@@ -1,6 +1,8 @@
 import 'package:boilerplate/core/stores/error/error_store.dart';
 import 'package:boilerplate/core/stores/form/form_store.dart';
+import 'package:boilerplate/data/service/google_sign_in_service.dart';
 import 'package:boilerplate/domain/usecase/user/is_logged_in_usecase.dart';
+import 'package:boilerplate/domain/usecase/user/login_google_usecase.dart';
 import 'package:boilerplate/domain/usecase/user/save_login_in_status_usecase.dart';
 import 'package:mobx/mobx.dart';
 
@@ -17,6 +19,8 @@ abstract class _UserStore with Store {
     this._isLoggedInUseCase,
     this._saveLoginStatusUseCase,
     this._loginUseCase,
+    this._loginGoogleUseCase,
+    this._googleSignInService,
     this.formErrorStore,
     this.errorStore,
   ) {
@@ -33,6 +37,8 @@ abstract class _UserStore with Store {
   final IsLoggedInUseCase _isLoggedInUseCase;
   final SaveLoginStatusUseCase _saveLoginStatusUseCase;
   final LoginUseCase _loginUseCase;
+  final LoginGoogleUseCase _loginGoogleUseCase;
+  final GoogleSignInService _googleSignInService;
 
   // stores:--------------------------------------------------------------------
   // for handling form errors
@@ -87,6 +93,40 @@ abstract class _UserStore with Store {
       this.success = false;
       throw e;
     });
+  }
+
+  Future loginWithGoogle() async {
+    try {
+      final googleAuthPayload = await _googleSignInService.signInAndGetCode();
+
+      final future = _loginGoogleUseCase.call(
+        params: LoginGoogleParams(
+          code: googleAuthPayload.code,
+          codeVerifier: googleAuthPayload.codeVerifier,
+          redirectUri: googleAuthPayload.redirectUri,
+        ),
+      );
+      loginFuture = ObservableFuture(future);
+
+      await future.then((value) async {
+        if (value != null) {
+          errorStore.setErrorMessage('');
+          await _saveLoginStatusUseCase.call(params: true);
+          isLoggedIn = true;
+          success = true;
+        }
+      }).catchError((e) {
+        errorStore
+            .setErrorMessage(e.toString().replaceFirst('Exception: ', ''));
+        isLoggedIn = false;
+        success = false;
+        throw e;
+      });
+    } catch (e) {
+      errorStore.setErrorMessage(e.toString().replaceFirst('Exception: ', ''));
+      isLoggedIn = false;
+      success = false;
+    }
   }
 
   logout() async {

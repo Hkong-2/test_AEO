@@ -6,6 +6,7 @@ import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 import 'package:dio/dio.dart';
 
 import '../../../domain/entity/user/user.dart';
+import '../../../domain/usecase/user/login_google_usecase.dart';
 import '../../../domain/usecase/user/login_usecase.dart';
 import '../../../domain/usecase/user/sign_up_usecase.dart';
 
@@ -40,6 +41,37 @@ class UserRepositoryImpl extends UserRepository {
       }
 
       throw Exception('Login failed. Please try again.');
+    }
+  }
+
+  @override
+  Future<User?> loginWithGoogle(LoginGoogleParams params) async {
+    try {
+      final accessToken = await _authApi.loginGoogle(
+        code: params.code,
+        codeVerifier: params.codeVerifier,
+        redirectUri: params.redirectUri,
+      );
+
+      await _sharedPrefsHelper.saveAuthToken(accessToken);
+      return User(accessToken: accessToken);
+    } on DioException catch (error) {
+      final statusCode = error.response?.statusCode;
+
+      if (statusCode == 400) {
+        throw Exception('Invalid input data or missing required fields');
+      }
+
+      if (statusCode == 401) {
+        throw Exception(
+            'Invalid Google authorization code or PKCE verification failed');
+      }
+
+      if (statusCode == 409) {
+        throw Exception('Email already registered with standard login');
+      }
+
+      throw Exception('Google login failed. Please try again.');
     }
   }
 

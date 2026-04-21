@@ -45,4 +45,28 @@ class AuthApi {
 
     return success == true;
   }
+
+  Future<String> loginGoogle({
+    required String code,
+    required String codeVerifier,
+    required String redirectUri,
+  }) async {
+    final response = await _dioClient.dio.post(
+      Endpoints.loginGoogle,
+      data: <String, dynamic>{
+        'code': code,
+        'codeVerifier': codeVerifier,
+        'redirectUri': redirectUri,
+      },
+    );
+
+    final responseData = response.data as Map<String, dynamic>?;
+    final accessToken = responseData?['accessToken'];
+
+    if (accessToken is! String || accessToken.isEmpty) {
+      throw Exception('Missing accessToken in Google login response');
+    }
+
+    return accessToken;
+  }
 }

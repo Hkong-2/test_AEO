@@ -9,6 +9,7 @@ import 'package:boilerplate/data/network/apis/posts/post_api.dart';
 import 'package:boilerplate/data/network/apis/seo/seo_api.dart';
 import 'package:boilerplate/data/network/constants/endpoints.dart';
 import 'package:boilerplate/data/network/interceptors/error_interceptor.dart';
+import 'package:boilerplate/data/service/google_sign_in_service.dart';
 import 'package:boilerplate/data/service/mock_execution_service.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 import 'package:event_bus/event_bus.dart';
@@ -39,6 +40,10 @@ class NetworkModule {
     // mock execution service:--------------------------------------------------
     getIt.registerSingleton<MockExecutionService>(
       MockExecutionService(),
+    );
+
+    getIt.registerSingleton<GoogleSignInService>(
+      GoogleSignInService(config),
     );
 
     // main dio client:---------------------------------------------------------

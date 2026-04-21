@@ -6,6 +6,8 @@ class EnvironmentConfig {
   final Environment environment;
   final String apiBaseUrl;
   final String aiApiBaseUrl;
+  final String googleServerClientId;
+  final String googleRedirectUri;
   final String sentryDsn;
   final bool analyticsEnabled;
 
@@ -13,6 +15,8 @@ class EnvironmentConfig {
     required this.environment,
     required this.apiBaseUrl,
     required this.aiApiBaseUrl,
+    this.googleServerClientId = '',
+    this.googleRedirectUri = '',
     this.sentryDsn = '',
     this.analyticsEnabled = false,
   });
@@ -23,6 +27,8 @@ class EnvironmentConfig {
       environment: Environment.dev,
       apiBaseUrl: 'http://jsonplaceholder.typicode.com',
       aiApiBaseUrl: 'http://localhost:8080',
+      googleServerClientId: '',
+      googleRedirectUri: '',
       sentryDsn: '',
       analyticsEnabled: false,
     );

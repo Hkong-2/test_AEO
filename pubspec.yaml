@@ -37,6 +37,7 @@ dependencies:
   fl_chart: ^0.69.0
   # G
   get_it: ^7.2.0
+  google_sign_in: ^6.2.1
   google_fonts: ^8.0.2
   # H
   http: ^1.2.0

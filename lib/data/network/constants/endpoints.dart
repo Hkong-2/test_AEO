@@ -19,6 +19,7 @@ class Endpoints {
   // auth endpoints
   static const String login = "/api/auth/login";
   static const String signup = "/api/auth/signup";
+  static const String loginGoogle = "/api/auth/login-google";
 
   // content enhancement endpoints (AI service)
   static const String contentBase = "/api/v1/content";

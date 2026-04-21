@@ -394,12 +394,9 @@ class _LoginScreenState extends State<LoginScreen> {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {
-          _showErrorMessage('Google Sign-In - Mock Implementation');
-          // Mock Google Sign-In
-          Future.delayed(const Duration(seconds: 1), () {
-            _userStore.login('user@google.com', 'mock_password');
-          });
+        onTap: () async {
+          DeviceUtils.hideKeyboard(context);
+          await _userStore.loginWithGoogle();
         },
         borderRadius: BorderRadius.circular(12.0),
         child: Container(
