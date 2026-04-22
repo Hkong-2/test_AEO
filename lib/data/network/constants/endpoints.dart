@@ -31,7 +31,14 @@ class Endpoints {
 
   // GSC endpoints
   static const String gscConnect = "/gsc/connect";
-  static const String gscLink = "/gsc/link";
+  static String gscStatus(String projectId) => "/gsc/status/$projectId";
+  static String gscDisconnect(String projectId) => "/gsc/disconnect/$projectId";
   static String gscSites(String projectId) => "/gsc/sites/$projectId";
+  static const String gscLink = "/gsc/link";
+  static String gscLinkedProperty(String projectId) => "/gsc/link/$projectId";
+  static String gscUnlink(String projectId) => "/gsc/link/$projectId";
   static String gscAnalytics(String projectId) => "/gsc/analytics/$projectId";
+  static String gscTopQueries(String projectId) => "/gsc/analytics/$projectId/queries";
+  static String gscTopPages(String projectId) => "/gsc/analytics/$projectId/pages";
+  static String gscDateTrend(String projectId) => "/gsc/analytics/$projectId/trend";
 }
