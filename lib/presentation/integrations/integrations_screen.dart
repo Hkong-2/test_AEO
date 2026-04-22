@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'store/integrations_store.dart';
+import 'store/gsc_store.dart';
 import 'widgets/connection_card.dart';
 import 'widgets/search_overview_dashboard.dart';
+import '../../di/service_locator.dart';
 
 class IntegrationsScreen extends StatefulWidget {
   const IntegrationsScreen({Key? key}) : super(key: key);
@@ -14,11 +16,15 @@ class IntegrationsScreen extends StatefulWidget {
 
 class _IntegrationsScreenState extends State<IntegrationsScreen> {
   late IntegrationsStore _store;
+  late GscStore _gscStore;
 
   @override
   void initState() {
     super.initState();
     _store = IntegrationsStore();
+    _gscStore = getIt<GscStore>();
+    // Check initial status using a dummy projectId for now since it's not defined where we get it
+    _gscStore.checkStatus("default-project");
   }
 
   @override
@@ -61,7 +67,7 @@ class _IntegrationsScreenState extends State<IntegrationsScreen> {
                 return const SizedBox.shrink();
               },
             ),
-            ConnectionCard(store: _store),
+            ConnectionCard(store: _store, gscStore: _gscStore),
             SearchOverviewDashboard(store: _store),
           ],
         ),
