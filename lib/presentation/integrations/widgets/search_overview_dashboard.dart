@@ -5,7 +5,8 @@ import '../store/integrations_store.dart';
 class SearchOverviewDashboard extends StatelessWidget {
   final IntegrationsStore store;
 
-  const SearchOverviewDashboard({Key? key, required this.store}) : super(key: key);
+  const SearchOverviewDashboard({Key? key, required this.store})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,67 +26,50 @@ class SearchOverviewDashboard extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 16),
-              const Text('Google Search Console Metrics', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              const Text('Google Search Console Metrics',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
               const SizedBox(height: 8),
-              GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1.5,
-                children: [
-                  _MetricCard(
-                    title: 'Impressions',
-                    value: store.gscImpressions.toString(),
-                    icon: Icons.visibility,
-                    color: Colors.blue,
-                  ),
-                  _MetricCard(
-                    title: 'Clicks',
-                    value: store.gscClicks.toString(),
-                    icon: Icons.ads_click,
-                    color: Colors.green,
-                  ),
-                  _MetricCard(
-                    title: 'Avg Position',
-                    value: store.gscAveragePosition.toString(),
-                    icon: Icons.bar_chart,
-                    color: Colors.orange,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24),
-              const Text('Google Analytics 4 Metrics', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              const SizedBox(height: 8),
-              GridView.count(
-                crossAxisCount: 2,
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childAspectRatio: 1.5,
-                children: [
-                  _MetricCard(
-                    title: 'Sessions',
-                    value: store.ga4Sessions.toString(),
-                    icon: Icons.people,
-                    color: Colors.purple,
-                  ),
-                  _MetricCard(
-                    title: 'Bounce Rate',
-                    value: store.ga4BounceRate,
-                    icon: Icons.call_missed_outgoing,
-                    color: Colors.red,
-                  ),
-                  _MetricCard(
-                    title: 'Key Conversions',
-                    value: store.ga4KeyConversions.toString(),
-                    icon: Icons.star,
-                    color: Colors.amber,
-                  ),
-                ],
-              ),
+              if (store.isLoadingAnalytics)
+                const Center(
+                    child: Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: CircularProgressIndicator(),
+                ))
+              else
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childAspectRatio: 1.5,
+                  children: [
+                    _MetricCard(
+                      title: 'Impressions',
+                      value: store.gscImpressions.toString(),
+                      icon: Icons.visibility,
+                      color: Colors.blue,
+                    ),
+                    _MetricCard(
+                      title: 'Clicks',
+                      value: store.gscClicks.toString(),
+                      icon: Icons.ads_click,
+                      color: Colors.green,
+                    ),
+                    _MetricCard(
+                      title: 'Avg Position',
+                      value: store.gscAveragePosition.toStringAsFixed(1),
+                      icon: Icons.bar_chart,
+                      color: Colors.orange,
+                    ),
+                    _MetricCard(
+                      title: 'CTR',
+                      value: '${(store.gscCtr * 100).toStringAsFixed(2)}%',
+                      icon: Icons.touch_app,
+                      color: Colors.purple,
+                    ),
+                  ],
+                ),
             ],
           ),
         );
@@ -120,7 +104,10 @@ class _MetricCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               value,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 4),
             Text(

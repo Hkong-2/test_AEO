@@ -25,4 +25,13 @@ class Endpoints {
   static String seoAuditResult(String id) => "/api/v1/seo/audit/$id";
   static String seoCrawler(String url) =>
       "/api/v1/seo/crawler?url=${Uri.encodeComponent(url)}";
+
+  // Project endpoints
+  static const String getProjects = "/projects/me";
+
+  // GSC endpoints
+  static const String gscConnect = "/gsc/connect";
+  static const String gscLink = "/gsc/link";
+  static String gscSites(String projectId) => "/gsc/sites/$projectId";
+  static String gscAnalytics(String projectId) => "/gsc/analytics/$projectId";
 }

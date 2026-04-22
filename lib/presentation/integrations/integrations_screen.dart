@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+import 'package:boilerplate/di/service_locator.dart';
 import 'store/integrations_store.dart';
 import 'widgets/connection_card.dart';
 import 'widgets/search_overview_dashboard.dart';
@@ -18,7 +19,8 @@ class _IntegrationsScreenState extends State<IntegrationsScreen> {
   @override
   void initState() {
     super.initState();
-    _store = IntegrationsStore();
+    _store = IntegrationsStore(getIt(), getIt());
+    _store.initialize();
   }
 
   @override
@@ -41,10 +43,12 @@ class _IntegrationsScreenState extends State<IntegrationsScreen> {
                       children: [
                         const Icon(Icons.warning, color: Colors.red),
                         const SizedBox(width: 8),
-                        const Expanded(
+                        Expanded(
                           child: Text(
-                            'Token Expired. Please reconnect your Google account.',
-                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                            _store.errorMessage ??
+                                'Token Expired. Please reconnect your Google account.',
+                            style: const TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                         IconButton(

@@ -49,42 +49,40 @@ class ConnectionCard extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         'Connected to Google',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const Spacer(),
                       TextButton(
                         onPressed: () => store.disconnect(),
-                        child: const Text('Disconnect', style: TextStyle(color: Colors.red)),
+                        child: const Text('Disconnect',
+                            style: TextStyle(color: Colors.red)),
                       )
                     ],
                   ),
                   const SizedBox(height: 16),
-                  DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText: 'Website Property',
-                      border: OutlineInputBorder(),
+                  if (store.isLoadingSites)
+                    const Center(child: CircularProgressIndicator())
+                  else
+                    DropdownButtonFormField<String>(
+                      decoration: const InputDecoration(
+                        labelText: 'Website Property',
+                        border: OutlineInputBorder(),
+                      ),
+                      value: store.selectedGscProperty,
+                      items: store.gscSites
+                          .map((prop) => DropdownMenuItem(
+                              value: prop.siteUrl, child: Text(prop.siteUrl)))
+                          .toList(),
+                      onChanged: (val) {
+                        if (val != null) {
+                          store.linkSite(val);
+                        }
+                      },
                     ),
-                    value: store.selectedGscProperty,
-                    items: store.gscProperties
-                        .map((prop) => DropdownMenuItem(value: prop, child: Text(prop)))
-                        .toList(),
-                    onChanged: (val) => store.selectedGscProperty = val,
-                  ),
-                  const SizedBox(height: 16),
-                  DropdownButtonFormField<String>(
-                    decoration: const InputDecoration(
-                      labelText: 'Data Stream',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: store.selectedGa4Stream,
-                    items: store.ga4Streams
-                        .map((stream) => DropdownMenuItem(value: stream, child: Text(stream)))
-                        .toList(),
-                    onChanged: (val) => store.selectedGa4Stream = val,
-                  ),
                 ],
               ],
             ),

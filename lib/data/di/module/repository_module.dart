@@ -23,6 +23,12 @@ import 'package:boilerplate/domain/repository/seo_repository.dart' as seo_opt;
 import 'package:boilerplate/data/repository/seo_repository_impl.dart' as seo_opt;
 import 'package:boilerplate/domain/repository/trend/trend_repository.dart';
 import 'package:boilerplate/data/repository/trend/trend_repository_impl.dart';
+import 'package:boilerplate/domain/repository/project/project_repository.dart';
+import 'package:boilerplate/data/repository/project/project_repository_impl.dart';
+import 'package:boilerplate/domain/repository/gsc/gsc_repository.dart';
+import 'package:boilerplate/data/repository/gsc/gsc_repository_impl.dart';
+import 'package:boilerplate/data/network/apis/project/project_api.dart';
+import 'package:boilerplate/data/network/apis/gsc/gsc_api.dart';
 
 import '../../../di/service_locator.dart';
 
@@ -60,5 +66,14 @@ class RepositoryModule {
 
     // trend repository:---------------------------------------------------------
     getIt.registerSingleton<TrendRepository>(TrendRepositoryImpl());
+
+    // project & gsc repositories:----------------------------------------------
+    getIt.registerSingleton<ProjectRepository>(ProjectRepositoryImpl(
+      getIt<ProjectApi>(),
+    ));
+
+    getIt.registerSingleton<GscRepository>(GscRepositoryImpl(
+      getIt<GscApi>(),
+    ));
   }
 }

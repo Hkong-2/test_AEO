@@ -25,6 +25,38 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
     });
   }
 
+  late final _$isLoadingSitesAtom =
+      Atom(name: '_IntegrationsStore.isLoadingSites', context: context);
+
+  @override
+  bool get isLoadingSites {
+    _$isLoadingSitesAtom.reportRead();
+    return super.isLoadingSites;
+  }
+
+  @override
+  set isLoadingSites(bool value) {
+    _$isLoadingSitesAtom.reportWrite(value, super.isLoadingSites, () {
+      super.isLoadingSites = value;
+    });
+  }
+
+  late final _$isLoadingAnalyticsAtom =
+      Atom(name: '_IntegrationsStore.isLoadingAnalytics', context: context);
+
+  @override
+  bool get isLoadingAnalytics {
+    _$isLoadingAnalyticsAtom.reportRead();
+    return super.isLoadingAnalytics;
+  }
+
+  @override
+  set isLoadingAnalytics(bool value) {
+    _$isLoadingAnalyticsAtom.reportWrite(value, super.isLoadingAnalytics, () {
+      super.isLoadingAnalytics = value;
+    });
+  }
+
   late final _$isConnectedAtom =
       Atom(name: '_IntegrationsStore.isConnected', context: context);
 
@@ -57,6 +89,54 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
     });
   }
 
+  late final _$errorMessageAtom =
+      Atom(name: '_IntegrationsStore.errorMessage', context: context);
+
+  @override
+  String? get errorMessage {
+    _$errorMessageAtom.reportRead();
+    return super.errorMessage;
+  }
+
+  @override
+  set errorMessage(String? value) {
+    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
+      super.errorMessage = value;
+    });
+  }
+
+  late final _$currentProjectIdAtom =
+      Atom(name: '_IntegrationsStore.currentProjectId', context: context);
+
+  @override
+  String? get currentProjectId {
+    _$currentProjectIdAtom.reportRead();
+    return super.currentProjectId;
+  }
+
+  @override
+  set currentProjectId(String? value) {
+    _$currentProjectIdAtom.reportWrite(value, super.currentProjectId, () {
+      super.currentProjectId = value;
+    });
+  }
+
+  late final _$gscSitesAtom =
+      Atom(name: '_IntegrationsStore.gscSites', context: context);
+
+  @override
+  ObservableList<GscSite> get gscSites {
+    _$gscSitesAtom.reportRead();
+    return super.gscSites;
+  }
+
+  @override
+  set gscSites(ObservableList<GscSite> value) {
+    _$gscSitesAtom.reportWrite(value, super.gscSites, () {
+      super.gscSites = value;
+    });
+  }
+
   late final _$selectedGscPropertyAtom =
       Atom(name: '_IntegrationsStore.selectedGscProperty', context: context);
 
@@ -73,20 +153,76 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
     });
   }
 
-  late final _$selectedGa4StreamAtom =
-      Atom(name: '_IntegrationsStore.selectedGa4Stream', context: context);
+  late final _$gscImpressionsAtom =
+      Atom(name: '_IntegrationsStore.gscImpressions', context: context);
 
   @override
-  String? get selectedGa4Stream {
-    _$selectedGa4StreamAtom.reportRead();
-    return super.selectedGa4Stream;
+  int get gscImpressions {
+    _$gscImpressionsAtom.reportRead();
+    return super.gscImpressions;
   }
 
   @override
-  set selectedGa4Stream(String? value) {
-    _$selectedGa4StreamAtom.reportWrite(value, super.selectedGa4Stream, () {
-      super.selectedGa4Stream = value;
+  set gscImpressions(int value) {
+    _$gscImpressionsAtom.reportWrite(value, super.gscImpressions, () {
+      super.gscImpressions = value;
     });
+  }
+
+  late final _$gscClicksAtom =
+      Atom(name: '_IntegrationsStore.gscClicks', context: context);
+
+  @override
+  int get gscClicks {
+    _$gscClicksAtom.reportRead();
+    return super.gscClicks;
+  }
+
+  @override
+  set gscClicks(int value) {
+    _$gscClicksAtom.reportWrite(value, super.gscClicks, () {
+      super.gscClicks = value;
+    });
+  }
+
+  late final _$gscAveragePositionAtom =
+      Atom(name: '_IntegrationsStore.gscAveragePosition', context: context);
+
+  @override
+  double get gscAveragePosition {
+    _$gscAveragePositionAtom.reportRead();
+    return super.gscAveragePosition;
+  }
+
+  @override
+  set gscAveragePosition(double value) {
+    _$gscAveragePositionAtom.reportWrite(value, super.gscAveragePosition, () {
+      super.gscAveragePosition = value;
+    });
+  }
+
+  late final _$gscCtrAtom =
+      Atom(name: '_IntegrationsStore.gscCtr', context: context);
+
+  @override
+  double get gscCtr {
+    _$gscCtrAtom.reportRead();
+    return super.gscCtr;
+  }
+
+  @override
+  set gscCtr(double value) {
+    _$gscCtrAtom.reportWrite(value, super.gscCtr, () {
+      super.gscCtr = value;
+    });
+  }
+
+  late final _$initializeAsyncAction =
+      AsyncAction('_IntegrationsStore.initialize', context: context);
+
+  @override
+  Future<void> initialize() {
+    return _$initializeAsyncAction.run(() => super.initialize());
   }
 
   late final _$connectGoogleAsyncAction =
@@ -95,6 +231,30 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
   @override
   Future<void> connectGoogle() {
     return _$connectGoogleAsyncAction.run(() => super.connectGoogle());
+  }
+
+  late final _$fetchGscSitesAsyncAction =
+      AsyncAction('_IntegrationsStore.fetchGscSites', context: context);
+
+  @override
+  Future<void> fetchGscSites() {
+    return _$fetchGscSitesAsyncAction.run(() => super.fetchGscSites());
+  }
+
+  late final _$linkSiteAsyncAction =
+      AsyncAction('_IntegrationsStore.linkSite', context: context);
+
+  @override
+  Future<void> linkSite(String siteUrl) {
+    return _$linkSiteAsyncAction.run(() => super.linkSite(siteUrl));
+  }
+
+  late final _$fetchAnalyticsAsyncAction =
+      AsyncAction('_IntegrationsStore.fetchAnalytics', context: context);
+
+  @override
+  Future<void> fetchAnalytics() {
+    return _$fetchAnalyticsAsyncAction.run(() => super.fetchAnalytics());
   }
 
   late final _$_IntegrationsStoreActionController =
@@ -126,10 +286,18 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
   String toString() {
     return '''
 isConnecting: ${isConnecting},
+isLoadingSites: ${isLoadingSites},
+isLoadingAnalytics: ${isLoadingAnalytics},
 isConnected: ${isConnected},
 hasError: ${hasError},
+errorMessage: ${errorMessage},
+currentProjectId: ${currentProjectId},
+gscSites: ${gscSites},
 selectedGscProperty: ${selectedGscProperty},
-selectedGa4Stream: ${selectedGa4Stream}
+gscImpressions: ${gscImpressions},
+gscClicks: ${gscClicks},
+gscAveragePosition: ${gscAveragePosition},
+gscCtr: ${gscCtr}
     ''';
   }
 }
