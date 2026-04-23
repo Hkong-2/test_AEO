@@ -42,7 +42,20 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
+        <!-- Provide a specific Activity for flutter_web_auth_2 to handle the callback -->
+        <activity android:name="com.linusu.flutter_web_auth_2.CallbackActivity" android:exported="true">
+            <intent-filter android:label="flutter_web_auth_2">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Google iOS URL Scheme for Flutter Web Auth -->
+                <data android:scheme="com.googleusercontent.apps.195844443608-p6dmp9ail6prnpaqvrqhjf21lsjhm841" />
+            </intent-filter>
+        </activity>
+
     </application>
     <meta-data
         android:name="flutterEmbedding"

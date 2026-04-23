@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:boilerplate/core/config/environment_config.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:crypto/crypto.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 class GoogleSignInPayload {
   final String code;
@@ -28,37 +30,68 @@ class GoogleSignInService {
       );
     }
 
-    final googleSignIn = GoogleSignIn(
-      scopes: const <String>['openid', 'email', 'profile'],
-      serverClientId: _config.googleServerClientId,
-    );
+    final String clientId = _config.googleServerClientId;
+    final String redirectUri = _config.googleRedirectUri;
 
-    final account = await googleSignIn.signIn();
-    if (account == null) {
-      throw Exception('Google sign-in was cancelled');
-    }
+    // Extract scheme from redirect URI
+    final Uri parsedRedirectUri = Uri.parse(redirectUri);
+    final String customScheme = parsedRedirectUri.scheme;
 
-    final code = account.serverAuthCode;
-    if (code == null || code.isEmpty) {
-      throw Exception(
-        'Unable to retrieve Google authorization code. Check Google OAuth client configuration.',
+    // Generate PKCE code verifier and challenge
+    final codeVerifier = _generateCodeVerifier();
+    final codeChallenge = _generateCodeChallenge(codeVerifier);
+
+    // Construct the Google OAuth 2.0 authorization URL
+    final authorizationUrl = Uri.https('accounts.google.com', '/o/oauth2/v2/auth', {
+      'client_id': clientId,
+      'redirect_uri': redirectUri,
+      'response_type': 'code',
+      'scope': 'openid email profile',
+      'code_challenge': codeChallenge,
+      'code_challenge_method': 'S256',
+      'prompt': 'select_account',
+    });
+
+    try {
+      // Open the browser and authenticate using flutter_web_auth_2
+      final result = await FlutterWebAuth2.authenticate(
+        url: authorizationUrl.toString(),
+        callbackUrlScheme: customScheme,
       );
-    }
 
-    return GoogleSignInPayload(
-      code: code,
-      codeVerifier: _generateCodeVerifier(),
-      redirectUri: _config.googleRedirectUri,
-    );
+      // Parse the result URL to get the authorization code
+      final resultUri = Uri.parse(result);
+      final code = resultUri.queryParameters['code'];
+
+      if (code == null || code.isEmpty) {
+        throw Exception('Authorization code not found in the redirect URI.');
+      }
+
+      return GoogleSignInPayload(
+        code: code,
+        codeVerifier: codeVerifier,
+        redirectUri: redirectUri,
+      );
+    } catch (e) {
+      if (e.toString().contains('CANCELED')) {
+        throw Exception('Google sign-in was cancelled');
+      }
+      throw Exception('Failed to authenticate with Google: $e');
+    }
   }
 
   String _generateCodeVerifier() {
-    const chars =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
     final random = Random.secure();
     return List<String>.generate(
-      64,
+      128,
       (_) => chars[random.nextInt(chars.length)],
     ).join();
+  }
+
+  String _generateCodeChallenge(String verifier) {
+    final bytes = utf8.encode(verifier);
+    final digest = sha256.convert(bytes);
+    return base64UrlEncode(digest.bytes).replaceAll('=', '');
   }
 }
