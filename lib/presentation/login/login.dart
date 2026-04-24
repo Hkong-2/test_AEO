@@ -318,8 +318,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildActionButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.spaceBetween,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         TextButton(
           style: TextButton.styleFrom(
@@ -466,14 +467,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.red.shade400,
                   ),
                 const SizedBox(width: 12.0),
-                Text(
-                  _userStore.isGoogleLoading
-                      ? 'Đang đăng nhập...'
-                      : 'Continue with Google',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : Colors.black87,
+                Flexible(
+                  child: Text(
+                    _userStore.isGoogleLoading
+                        ? 'Đang đăng nhập...'
+                        : 'Continue with Google',
+                    style: TextStyle(
+                      fontSize: 15.0,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],
