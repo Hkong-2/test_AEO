@@ -39,9 +39,10 @@ abstract class _IntegrationsStore with Store {
 
   // Mock Data GA4
   final List<String> ga4Streams = [
-    'GA4 - Main Site',
-    'GA4 - App',
-    'GA4 - Blog'
+    'GA4 - Main Website (G-ABCDEF1234)',
+    'GA4 - Blog (G-XYZ9876543)',
+    'GA4 - iOS App (1234567890)',
+    'GA4 - Android App (0987654321)'
   ];
 
 
@@ -49,14 +50,14 @@ abstract class _IntegrationsStore with Store {
   String? selectedGa4Stream;
 
   // GSC Metrics
-  final int gscImpressions = 12450;
-  final int gscClicks = 3200;
-  final double gscAveragePosition = 4.5;
+  final int gscImpressions = 145200;
+  final int gscClicks = 12400;
+  final double gscAveragePosition = 12.4;
 
   // GA4 Metrics
-  final int ga4Sessions = 8900;
-  final String ga4BounceRate = '45%';
-  final int ga4KeyConversions = 150;
+  final int ga4Sessions = 45890;
+  final String ga4BounceRate = '38.5%';
+  final int ga4KeyConversions = 1250;
 
   @action
   Future<void> init() async {
