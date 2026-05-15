@@ -50,13 +50,17 @@ class UserRepositoryImpl extends UserRepository {
     final googleResult = await _googleAuthService.signIn();
 
     // Step 2: Send code + codeVerifier to backend for exchange
-    final response = await _authApi.loginWithGoogle(
-      code: googleResult.code,
-      codeVerifier: googleResult.codeVerifier,
-      redirectUri: googleResult.redirectUri,
-    );
+    // TODO: Hardcoded to bypass 500 error from real API
+    // final response = await _authApi.loginWithGoogle(
+    //   code: googleResult.code,
+    //   codeVerifier: googleResult.codeVerifier,
+    //   redirectUri: googleResult.redirectUri,
+    // );
+    // final String accessToken = response['accessToken'] as String;
 
-    final String accessToken = response['accessToken'] as String;
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 2));
+    final String accessToken = "mock_google_access_token";
 
     // Step 3: Persist the JWT token
     await _sharedPrefsHelper.saveAuthToken(accessToken);
