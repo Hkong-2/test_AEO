@@ -50,14 +50,36 @@ abstract class _IntegrationsStore with Store {
   String? selectedGa4Stream;
 
   // GSC Metrics
-  final int gscImpressions = 145200;
-  final int gscClicks = 12400;
-  final double gscAveragePosition = 12.4;
+  @observable
+  int gscImpressions = 145200;
+  @observable
+  int gscClicks = 12400;
+  @observable
+  double gscAveragePosition = 12.4;
 
   // GA4 Metrics
-  final int ga4Sessions = 45890;
-  final String ga4BounceRate = '38.5%';
-  final int ga4KeyConversions = 1250;
+  @observable
+  int ga4Sessions = 45890;
+  @observable
+  String ga4BounceRate = '38.5%';
+  @observable
+  int ga4KeyConversions = 1250;
+
+  @action
+  void refreshMetrics() {
+    // Generate pseudo-random realistic looking metrics based on current selections
+    int seed = (selectedGscProperty?.hashCode ?? 0) + (selectedGa4Stream?.hashCode ?? 0);
+
+    // Use the seed to create variations, but keep them realistic
+    gscImpressions = 100000 + (seed % 150000).abs();
+    gscClicks = (gscImpressions * (0.05 + ((seed % 100) / 1000.0))).round(); // CTR ~ 5-15%
+    gscAveragePosition = 5.0 + ((seed % 200) / 10.0); // Pos ~ 5.0 - 25.0
+
+    ga4Sessions = (gscClicks * (1.2 + ((seed % 50) / 100.0))).round(); // Sessions usually slightly higher than GSC Clicks
+    double bounceRateValue = 35.0 + ((seed % 250) / 10.0); // 35% - 60%
+    ga4BounceRate = '${bounceRateValue.toStringAsFixed(1)}%';
+    ga4KeyConversions = (ga4Sessions * (0.02 + ((seed % 50) / 1000.0))).round(); // Conv rate ~ 2-7%
+  }
 
   @action
   Future<void> init() async {
