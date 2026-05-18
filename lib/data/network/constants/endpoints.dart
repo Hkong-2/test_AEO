@@ -56,14 +56,21 @@ class Endpoints {
       '/api/projects/$projectId/metrics/analytics';
   static String gaTrend(String projectId) =>
       '/api/ga/analytics/$projectId/trend';
+
+  // ─── Google Search Console (GSC) endpoints ───────────────────────────────
+  static const String gscConnect = '/api/gsc/connect';
+  static const String gscLink = '/api/gsc/link';
+  static String gscLinkedSite(String projectId) => '/api/gsc/link/$projectId';
+  static String gscStatus(String projectId) => '/api/gsc/status/$projectId';
+  static String gscSites(String projectId) => '/api/gsc/sites/$projectId';
+  static String gscDisconnect(String projectId) =>
+      '/api/gsc/disconnect/$projectId';
   static String gscTrend(String projectId) =>
       '/api/gsc/analytics/$projectId/trend';
   static String triggerAnalysis(String projectId) =>
       '/api/projects/$projectId/test-analyze';
   static const String projectsMe = '/api/projects/me';
   static const String projectsList = '/api/projects';
-  static String projectContents(String projectId) =>
-      '/api/projects/$projectId/contents';
 
   // overview metrics endpoints
   static String getOverviewMetrics(String projectId) =>
