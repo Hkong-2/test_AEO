@@ -153,6 +153,102 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
     });
   }
 
+  late final _$gscImpressionsAtom =
+      Atom(name: '_IntegrationsStore.gscImpressions', context: context);
+
+  @override
+  int get gscImpressions {
+    _$gscImpressionsAtom.reportRead();
+    return super.gscImpressions;
+  }
+
+  @override
+  set gscImpressions(int value) {
+    _$gscImpressionsAtom.reportWrite(value, super.gscImpressions, () {
+      super.gscImpressions = value;
+    });
+  }
+
+  late final _$gscClicksAtom =
+      Atom(name: '_IntegrationsStore.gscClicks', context: context);
+
+  @override
+  int get gscClicks {
+    _$gscClicksAtom.reportRead();
+    return super.gscClicks;
+  }
+
+  @override
+  set gscClicks(int value) {
+    _$gscClicksAtom.reportWrite(value, super.gscClicks, () {
+      super.gscClicks = value;
+    });
+  }
+
+  late final _$gscAveragePositionAtom =
+      Atom(name: '_IntegrationsStore.gscAveragePosition', context: context);
+
+  @override
+  double get gscAveragePosition {
+    _$gscAveragePositionAtom.reportRead();
+    return super.gscAveragePosition;
+  }
+
+  @override
+  set gscAveragePosition(double value) {
+    _$gscAveragePositionAtom.reportWrite(value, super.gscAveragePosition, () {
+      super.gscAveragePosition = value;
+    });
+  }
+
+  late final _$ga4SessionsAtom =
+      Atom(name: '_IntegrationsStore.ga4Sessions', context: context);
+
+  @override
+  int get ga4Sessions {
+    _$ga4SessionsAtom.reportRead();
+    return super.ga4Sessions;
+  }
+
+  @override
+  set ga4Sessions(int value) {
+    _$ga4SessionsAtom.reportWrite(value, super.ga4Sessions, () {
+      super.ga4Sessions = value;
+    });
+  }
+
+  late final _$ga4BounceRateAtom =
+      Atom(name: '_IntegrationsStore.ga4BounceRate', context: context);
+
+  @override
+  String get ga4BounceRate {
+    _$ga4BounceRateAtom.reportRead();
+    return super.ga4BounceRate;
+  }
+
+  @override
+  set ga4BounceRate(String value) {
+    _$ga4BounceRateAtom.reportWrite(value, super.ga4BounceRate, () {
+      super.ga4BounceRate = value;
+    });
+  }
+
+  late final _$ga4KeyConversionsAtom =
+      Atom(name: '_IntegrationsStore.ga4KeyConversions', context: context);
+
+  @override
+  int get ga4KeyConversions {
+    _$ga4KeyConversionsAtom.reportRead();
+    return super.ga4KeyConversions;
+  }
+
+  @override
+  set ga4KeyConversions(int value) {
+    _$ga4KeyConversionsAtom.reportWrite(value, super.ga4KeyConversions, () {
+      super.ga4KeyConversions = value;
+    });
+  }
+
   late final _$initAsyncAction =
       AsyncAction('_IntegrationsStore.init', context: context);
 
@@ -189,6 +285,17 @@ mixin _$IntegrationsStore on _IntegrationsStore, Store {
       ActionController(name: '_IntegrationsStore', context: context);
 
   @override
+  void refreshMetrics() {
+    final _$actionInfo = _$_IntegrationsStoreActionController.startAction(
+        name: '_IntegrationsStore.refreshMetrics');
+    try {
+      return super.refreshMetrics();
+    } finally {
+      _$_IntegrationsStoreActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void simulateError() {
     final _$actionInfo = _$_IntegrationsStoreActionController.startAction(
         name: '_IntegrationsStore.simulateError');
@@ -210,7 +317,13 @@ hasError: ${hasError},
 errorMessage: ${errorMessage},
 gscProperties: ${gscProperties},
 selectedGscProperty: ${selectedGscProperty},
-selectedGa4Stream: ${selectedGa4Stream}
+selectedGa4Stream: ${selectedGa4Stream},
+gscImpressions: ${gscImpressions},
+gscClicks: ${gscClicks},
+gscAveragePosition: ${gscAveragePosition},
+ga4Sessions: ${ga4Sessions},
+ga4BounceRate: ${ga4BounceRate},
+ga4KeyConversions: ${ga4KeyConversions}
     ''';
   }
 }

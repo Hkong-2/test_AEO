@@ -67,15 +67,21 @@ class ConnectionCard extends StatelessWidget {
                     children: [
                       Expanded(
                         child: DropdownButtonFormField<String>(
+                          isExpanded: true,
                           decoration: const InputDecoration(
                             labelText: 'Website Property (GSC)',
                             border: OutlineInputBorder(),
                           ),
                           value: store.selectedGscProperty,
                           items: store.gscProperties
-                              .map((prop) => DropdownMenuItem(value: prop, child: Text(prop)))
+                              .map((prop) => DropdownMenuItem(
+                                  value: prop,
+                                  child: Text(prop, overflow: TextOverflow.ellipsis)))
                               .toList(),
-                          onChanged: (val) => store.selectedGscProperty = val,
+                          onChanged: (val) {
+                            store.selectedGscProperty = val;
+                            store.refreshMetrics();
+                          },
                         ),
                       ),
                       const SizedBox(width: 8),
@@ -89,15 +95,21 @@ class ConnectionCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
+                    isExpanded: true,
                     decoration: const InputDecoration(
                       labelText: 'Data Stream',
                       border: OutlineInputBorder(),
                     ),
                     value: store.selectedGa4Stream,
                     items: store.ga4Streams
-                        .map((stream) => DropdownMenuItem(value: stream, child: Text(stream)))
+                        .map((stream) => DropdownMenuItem(
+                            value: stream,
+                            child: Text(stream, overflow: TextOverflow.ellipsis)))
                         .toList(),
-                    onChanged: (val) => store.selectedGa4Stream = val,
+                    onChanged: (val) {
+                      store.selectedGa4Stream = val;
+                      store.refreshMetrics();
+                    },
                   ),
                 ],
               ],
